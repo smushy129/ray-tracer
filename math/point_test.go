@@ -2,7 +2,7 @@ package math
 
 import "testing"
 
-func TestPoint(t *testing.T) {
+func TestNewPoint(t *testing.T) {
 	tuple := Tuple{1, 2, 3, 1}
 	point := Point(1, 2, 3)
 
@@ -18,11 +18,11 @@ func TestPointSubtractPoint(t *testing.T) {
 	p1 := Point(3, 2, 1)
 	p2 := Point(5, 6, 7)
 
-	diff := p1.subtract(p2)
+	vector := p1.subtract(p2)
 	expected := Vector(-2, -4, -6)
 
-	if !diff.equals(expected) {
-		t.Errorf("expected %v, got %v", expected, diff)
+	if !vector.equals(expected) {
+		t.Errorf("expected %v, got %v", expected, vector)
 	}
 }
 
@@ -30,10 +30,10 @@ func TestPointSubtractVector(t *testing.T) {
 	p1 := Point(3, 2, 1)
 	p2 := Vector(5, 6, 7)
 
-	diff := p1.subtract(p2)
+	point := p1.subtract(p2)
 	expected := Point(-2, -4, -6)
 
-	if !diff.equals(expected) {
-		t.Errorf("expected %v, got %v", expected, diff)
+	if !point.equals(expected) {
+		t.Errorf("expected %v, got %v", expected, point)
 	}
 }
