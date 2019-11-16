@@ -7,7 +7,7 @@ type Tuple struct {
 	x float64
 	y float64
 	z float64
-	w int
+	w float64
 }
 
 func (t Tuple) equals(t1 Tuple) bool {
@@ -45,11 +45,20 @@ func (t Tuple) subtract(t1 Tuple) Tuple {
 	}
 }
 
-func (t Tuple) scale(t1 Tuple) Tuple {
+func (t Tuple) scale(s float64) Tuple {
 	return Tuple{
-		x: t.x * t1.x,
-		y: t.y * t1.y,
-		z: t.z * t1.z,
-		w: t.w * t1.w,
+		x: t.x * s,
+		y: t.y * s,
+		z: t.z * s,
+		w: t.w * s,
+	}
+}
+
+func (t Tuple) invert() Tuple {
+	return Tuple{
+		x: -t.x,
+		y: -t.y,
+		z: -t.z,
+		w: -t.w,
 	}
 }
