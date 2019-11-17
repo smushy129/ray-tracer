@@ -1,4 +1,4 @@
-package math
+package tuple
 
 import "math"
 
@@ -10,7 +10,8 @@ type Tuple struct {
 	w float64
 }
 
-func (t Tuple) equals(t1 Tuple) bool {
+// Equals compares float for equality within a range
+func (t Tuple) Equals(t1 Tuple) bool {
 	EPSILON := 0.00001
 	if math.Abs(t.x-t1.x) > EPSILON {
 		return false
@@ -27,7 +28,8 @@ func (t Tuple) equals(t1 Tuple) bool {
 	return true
 }
 
-func (t Tuple) add(t1 Tuple) Tuple {
+// Add adds two tuples
+func (t Tuple) Add(t1 Tuple) Tuple {
 	return Tuple{
 		x: t.x + t1.x,
 		y: t.y + t1.y,
@@ -36,7 +38,8 @@ func (t Tuple) add(t1 Tuple) Tuple {
 	}
 }
 
-func (t Tuple) subtract(t1 Tuple) Tuple {
+// Subtract subtracts two tuples
+func (t Tuple) Subtract(t1 Tuple) Tuple {
 	return Tuple{
 		x: t.x - t1.x,
 		y: t.y - t1.y,
@@ -45,7 +48,8 @@ func (t Tuple) subtract(t1 Tuple) Tuple {
 	}
 }
 
-func (t Tuple) scale(s float64) Tuple {
+// Scale multiplies a scalar value by each value of a tuple
+func (t Tuple) Scale(s float64) Tuple {
 	return Tuple{
 		x: t.x * s,
 		y: t.y * s,
@@ -54,7 +58,8 @@ func (t Tuple) scale(s float64) Tuple {
 	}
 }
 
-func (t Tuple) invert() Tuple {
+// Invert negates each value of a tuple
+func (t Tuple) Invert() Tuple {
 	return Tuple{
 		x: -t.x,
 		y: -t.y,

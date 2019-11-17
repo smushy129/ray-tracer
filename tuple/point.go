@@ -1,4 +1,4 @@
-package math
+package tuple
 
 // Point is a Tuple with w = 1
 type Point = Tuple
