@@ -6,10 +6,10 @@ func TestNewColor(t *testing.T) {
 	tuple := Tuple{-0.5, 0.4, 1.7, 0}
 	color := NewColor(-0.5, 0.4, 1.7)
 
-	if color.x != tuple.x ||
-		color.y != tuple.y ||
-		color.z != tuple.z ||
-		color.w != tuple.w {
+	if color.X != tuple.X ||
+		color.Y != tuple.Y ||
+		color.Z != tuple.Z ||
+		color.W != tuple.W {
 		t.Errorf("got %v, expected %v", color, tuple)
 	}
 }

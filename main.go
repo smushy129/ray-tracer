@@ -1,19 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"os"
 
-	m "github.com/kingsleyliao/ray-tracer/math"
+	"github.com/kingsleyliao/ray-tracer/canvas"
+	"github.com/kingsleyliao/ray-tracer/tuple"
 )
 
 func main() {
-	v := m.NewVector(1, 2, 3)
-	p := m.NewPoint(1, 2, 3)
+	c := canvas.NewCanvas(1280, 720)
+	color := tuple.NewColor(1, 0.8, 0.6)
 
-	v.Magnitude()
-	p.Magnitude()
+	for i := range c.Matrix {
+		row := c.Matrix[i]
+		for j := range row {
+			canvas.WritePixel(c, j, i, color)
+		}
+	}
 
-	fmt.Printf("%v \n", v.Magnitude())
-	fmt.Printf("%v \n", p.Magnitude())
-	fmt.Printf("%v \n", v.add(p))
+	ppm := c.ToPPM()
+
+	f, err := os.Create("canvas.ppm")
+	if err != nil {
+		panic(err)
+	}
+
+	f.WriteString(ppm)
 }

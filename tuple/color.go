@@ -16,8 +16,8 @@ func NewColor(r, g, b float64) Color {
 // Multiply multiplies two colors
 func (c Color) Multiply(c2 Color) Color {
 	return NewColor(
-		c.x*c2.x,
-		c.y*c2.y,
-		c.z*c2.z,
+		c.X*c2.X,
+		c.Y*c2.Y,
+		c.Z*c2.Z,
 	)
 }

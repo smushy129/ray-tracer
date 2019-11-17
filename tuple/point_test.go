@@ -3,14 +3,14 @@ package tuple
 import "testing"
 
 func TestNewPoint(t *testing.T) {
-	tuple := Tuple{1, 2, 3, 1}
 	point := NewPoint(1, 2, 3)
+	expected := Tuple{1, 2, 3, 1}
 
-	if point.x != tuple.x ||
-		point.y != tuple.y ||
-		point.z != tuple.z ||
-		point.w != tuple.w {
-		t.Errorf("got %v, expected %v", point, tuple)
+	if point.X != expected.X ||
+		point.Y != expected.Y ||
+		point.Z != expected.Z ||
+		point.W != expected.W {
+		t.Errorf("expected %v, got %v", expected, point)
 	}
 }
 

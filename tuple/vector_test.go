@@ -9,10 +9,10 @@ func TestNewVector(t *testing.T) {
 	tuple := Tuple{1, 2, 3, 0}
 	point := NewVector(1, 2, 3)
 
-	if point.x != tuple.x ||
-		point.y != tuple.y ||
-		point.z != tuple.z ||
-		point.w != tuple.w {
+	if point.X != tuple.X ||
+		point.Y != tuple.Y ||
+		point.Z != tuple.Z ||
+		point.W != tuple.W {
 		t.Errorf("got %v, expected %v", point, tuple)
 	}
 }
