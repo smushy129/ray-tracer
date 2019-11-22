@@ -15,7 +15,7 @@ func TestZeroMatrix(t *testing.T) {
 		{0, 0, 0, 0},
 	}
 
-	if m1 != expected {
+	if !m1.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, m1)
 	}
 }
@@ -29,7 +29,7 @@ func TestIdentityMatrix(t *testing.T) {
 		{0, 0, 0, 1},
 	}
 
-	if m1 != expected {
+	if !m1.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, m1)
 	}
 }
@@ -50,7 +50,7 @@ func TestIdentityMatrixMultiplication(t *testing.T) {
 		{4, 8, 16, 32},
 	}
 
-	if result != expected {
+	if !result.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, result)
 	}
 }
@@ -69,13 +69,12 @@ func TestMatrixEquality(t *testing.T) {
 		{9, 8, 7, 6},
 		{5, 4, 3, 2},
 	}
-	// Go is nice because arrays can be compared for value equality with != and ==
-	// No need for a lame Equals method :)
-	isEqual := m1 == m2
+
+	IsEqual := m1.IsEqual(m2)
 	expected := true
 
-	if isEqual != expected {
-		t.Errorf("expected %v, got %v", expected, isEqual)
+	if IsEqual != expected {
+		t.Errorf("expected %v, got %v", expected, IsEqual)
 	}
 }
 
@@ -101,7 +100,7 @@ func TestMatrixMultiplication(t *testing.T) {
 		{16, 26, 46, 42},
 	}
 
-	if m != expected {
+	if !m.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, m)
 	}
 }
@@ -139,7 +138,7 @@ func TestMatrixTranspose(t *testing.T) {
 		{0, 8, 3, 8},
 	}
 
-	if transposed != expected {
+	if !transposed.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, transposed)
 	}
 }
@@ -148,18 +147,18 @@ func TestTransposeIdentityMatrix(t *testing.T) {
 	expected := IdentityMatrix()
 	transposed := expected.Transpose()
 
-	if transposed != expected {
+	if !transposed.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, transposed)
 	}
 }
 
 func TestDeterminant(t *testing.T) {
-	m := [2][2]float64{
+	m := Matrix{
 		{1, 5},
 		{-3, 2},
 	}
 
-	d := Determinant(m)
+	d := m.Determinant()
 	var expected float64 = 17
 
 	if d != expected {
@@ -175,29 +174,88 @@ func TestSubMatrix(t *testing.T) {
 		{-7, 1, -1, 1},
 	}
 
-	sub := SubMatrix(m, 2, 1)
+	sub := m.SubMatrix(2, 1)
 	expected := [][]float64{
 		{-6, 1, 6},
 		{-8, 8, 6},
 		{-7, -1, 1},
 	}
 
-	if !isEqual(sub, expected) {
+	if !sub.IsEqual(expected) {
 		t.Errorf("expected %v, got %v", expected, sub)
 	}
 
 }
 
-func isEqual(a, b [][]float64) bool {
-	if len(a) != len(b) {
-		return false
+func TestMinor_1(t *testing.T) {
+	m := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
 	}
-	for i := range a {
-		for j := range a[i] {
-			if a[i][j] != b[i][j] {
-				return false
-			}
-		}
+
+	sub := m.SubMatrix(1, 0)
+	d := sub.Determinant()
+	minor := m.Minor(1, 0)
+
+	if d != minor {
+		t.Errorf("expected %v, got %v", d, minor)
 	}
-	return true
+}
+
+func TestMinor_2(t *testing.T) {
+	m := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+	minor := m.Minor(0, 0)
+	var expected float64 = -12
+
+	if minor != expected {
+		t.Errorf("expected %v, got %v", expected, minor)
+	}
+}
+
+func TestMinor_3(t *testing.T) {
+	m := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+	minor := m.Minor(1, 0)
+	var expected float64 = 25
+
+	if minor != expected {
+		t.Errorf("expected %v, got %v", expected, minor)
+	}
+}
+
+func TestCofactor_1(t *testing.T) {
+	m := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+	cofactor := m.Cofactor(0, 0)
+	var expected float64 = -12
+
+	if cofactor != expected {
+		t.Errorf("expected %v, got %v", expected, cofactor)
+	}
+}
+
+func TestCofactor_2(t *testing.T) {
+	m := Matrix{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	}
+	cofactor := m.Cofactor(1, 0)
+	var expected float64 = -25
+
+	if cofactor != expected {
+		cofactor := m.Cofactor(1, 0)
+		t.Errorf("expected %v, got %v", expected, cofactor)
+	}
 }

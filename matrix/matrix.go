@@ -3,11 +3,16 @@ package matrix
 import "github.com/kingsleyliao/ray-tracer/tuple"
 
 // Matrix represents the rotation, scalar, and positional data for a node
-type Matrix [4][4]float64
+type Matrix [][]float64
 
 // ZeroMatrix creates a new 4x4 matrix with zero values
 func ZeroMatrix() Matrix {
-	return Matrix{}
+	return Matrix{
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+	}
 }
 
 // IdentityMatrix returns a new instance of an identity matrix
@@ -22,7 +27,7 @@ func IdentityMatrix() Matrix {
 
 // Multiply returns results the result of Matrix being multiplied by another Matrix
 func (m Matrix) Multiply(a Matrix) Matrix {
-	result := Matrix{}
+	result := ZeroMatrix()
 
 	for row := 0; row < 4; row++ {
 		for col := 0; col < 4; col++ {
@@ -55,7 +60,7 @@ func (m Matrix) MultiplyTuple(t tuple.Tuple) tuple.Tuple {
 
 // Transpose returns the transposed form of a matrix
 func (m Matrix) Transpose() Matrix {
-	transposed := Matrix{}
+	transposed := ZeroMatrix()
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -67,13 +72,13 @@ func (m Matrix) Transpose() Matrix {
 }
 
 // Determinant returns the determinant of a 2x2 matrix
-func Determinant(m [2][2]float64) float64 {
+func (m Matrix) Determinant() float64 {
 	return m[0][0]*m[1][1] - m[0][1]*m[1][0]
 }
 
 // SubMatrix returns the submatrix of a matrix by ignoring row r and column c
-func SubMatrix(m Matrix, r, c int) [][]float64 {
-	result := [][]float64{}
+func (m Matrix) SubMatrix(r, c int) Matrix {
+	result := Matrix{}
 	rowOffset := 0
 
 	for i := 0; i < len(m); i++ {
@@ -81,7 +86,13 @@ func SubMatrix(m Matrix, r, c int) [][]float64 {
 			rowOffset = 1
 			continue
 		}
-		row := append(m[i][0:c], m[i][c+1:]...)
+		row := make([]float64, 0)
+		if c == 0 {
+			row = append(row, m[i][c+1:]...)
+		} else {
+			row = append(m[i][0:c], m[i][c+1:]...)
+		}
+
 		result = append(result, row)
 		for j := range row {
 			result[i-rowOffset][j] = row[j]
@@ -90,4 +101,34 @@ func SubMatrix(m Matrix, r, c int) [][]float64 {
 	}
 
 	return result
+}
+
+// Minor returns the minor of a matrix (the determinant of the submatrix of a matrix ignoring row r and column c)
+func (m Matrix) Minor(r, c int) float64 {
+	sub := m.SubMatrix(r, c)
+	return sub.Determinant()
+}
+
+// Cofactor returns the cofactor of a matrix
+func (m Matrix) Cofactor(i, j int) float64 {
+	minor := m.Minor(i, j)
+	if (i+j)%2 == 0 {
+		return minor
+	}
+	return -minor
+}
+
+// IsEqual returns the value equality of two matrices
+func (m Matrix) IsEqual(a Matrix) bool {
+	if len(m) != len(a) {
+		return false
+	}
+	for i := range m {
+		for j := range a[i] {
+			if m[i][j] != a[i][j] {
+				return false
+			}
+		}
+	}
+	return true
 }
