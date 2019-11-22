@@ -1,6 +1,8 @@
 package matrix
 
-import "github.com/kingsleyliao/ray-tracer/tuple"
+import (
+	"github.com/kingsleyliao/ray-tracer/tuple"
+)
 
 // Matrix represents the rotation, scalar, and positional data for a node
 type Matrix [][]float64
@@ -73,7 +75,15 @@ func (m Matrix) Transpose() Matrix {
 
 // Determinant returns the determinant of a 2x2 matrix
 func (m Matrix) Determinant() float64 {
-	return m[0][0]*m[1][1] - m[0][1]*m[1][0]
+	var d float64
+	if len(m) == 2 {
+		d = m[0][0]*m[1][1] - m[0][1]*m[1][0]
+	} else {
+		for i := range m {
+			d += m[0][i] * m.Cofactor(0, i)
+		}
+	}
+	return d
 }
 
 // SubMatrix returns the submatrix of a matrix by ignoring row r and column c
@@ -90,7 +100,8 @@ func (m Matrix) SubMatrix(r, c int) Matrix {
 		if c == 0 {
 			row = append(row, m[i][c+1:]...)
 		} else {
-			row = append(m[i][0:c], m[i][c+1:]...)
+			row = append(row, m[i][0:c]...)
+			row = append(row, m[i][c+1:]...)
 		}
 
 		result = append(result, row)

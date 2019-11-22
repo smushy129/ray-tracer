@@ -152,7 +152,7 @@ func TestTransposeIdentityMatrix(t *testing.T) {
 	}
 }
 
-func TestDeterminant(t *testing.T) {
+func TestDeterminant_1(t *testing.T) {
 	m := Matrix{
 		{1, 5},
 		{-3, 2},
@@ -160,6 +160,37 @@ func TestDeterminant(t *testing.T) {
 
 	d := m.Determinant()
 	var expected float64 = 17
+
+	if d != expected {
+		t.Errorf("expected %v, got %v", expected, d)
+	}
+}
+
+func TestDeterminant_2(t *testing.T) {
+	m := Matrix{
+		{1, 2, 6},
+		{-5, 8, -4},
+		{2, 6, 4},
+	}
+
+	d := m.Determinant()
+	var expected float64 = -196
+
+	if d != expected {
+		t.Errorf("expected %v, got %v", expected, d)
+	}
+}
+
+func TestDeterminant_3(t *testing.T) {
+	m := Matrix{
+		{-2, -8, 3, 5},
+		{-3, 1, 7, 3},
+		{1, 2, -9, 6},
+		{-6, 7, 7, -9},
+	}
+
+	d := m.Determinant()
+	var expected float64 = -4071
 
 	if d != expected {
 		t.Errorf("expected %v, got %v", expected, d)
@@ -255,7 +286,20 @@ func TestCofactor_2(t *testing.T) {
 	var expected float64 = -25
 
 	if cofactor != expected {
-		cofactor := m.Cofactor(1, 0)
+		t.Errorf("expected %v, got %v", expected, cofactor)
+	}
+}
+
+func TestCofactor_3(t *testing.T) {
+	m := Matrix{
+		{1, 2, 6},
+		{-5, 8, -4},
+		{2, 6, 4},
+	}
+	cofactor := m.Cofactor(0, 2)
+	var expected float64 = -46
+
+	if cofactor != expected {
 		t.Errorf("expected %v, got %v", expected, cofactor)
 	}
 }
