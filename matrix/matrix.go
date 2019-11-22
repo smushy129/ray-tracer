@@ -1,13 +1,15 @@
 package matrix
 
 import (
+	"math"
+
 	"github.com/kingsleyliao/ray-tracer/tuple"
 )
 
 // Matrix represents the rotation, scalar, and positional data for a node
 type Matrix [][]float64
 
-// ZeroMatrix creates a new 4x4 matrix with zero values
+// ZeroMatrix creates a new 4x4 Matrix with zero values
 func ZeroMatrix() Matrix {
 	return Matrix{
 		{0, 0, 0, 0},
@@ -17,7 +19,7 @@ func ZeroMatrix() Matrix {
 	}
 }
 
-// IdentityMatrix returns a new instance of an identity matrix
+// IdentityMatrix returns a new instance of an identity Matrix
 func IdentityMatrix() Matrix {
 	return Matrix{
 		{1, 0, 0, 0},
@@ -60,7 +62,7 @@ func (m Matrix) MultiplyTuple(t tuple.Tuple) tuple.Tuple {
 	return tuple.Tuple{X: result[0], Y: result[1], Z: result[2], W: result[3]}
 }
 
-// Transpose returns the transposed form of a matrix
+// Transpose returns the transposed form of a Matrix
 func (m Matrix) Transpose() Matrix {
 	transposed := ZeroMatrix()
 
@@ -73,7 +75,7 @@ func (m Matrix) Transpose() Matrix {
 	return transposed
 }
 
-// Determinant returns the determinant of a 2x2 matrix
+// Determinant returns the determinant of a 2x2 Matrix
 func (m Matrix) Determinant() float64 {
 	var d float64
 	if len(m) == 2 {
@@ -86,7 +88,7 @@ func (m Matrix) Determinant() float64 {
 	return d
 }
 
-// SubMatrix returns the submatrix of a matrix by ignoring row r and column c
+// SubMatrix returns the subMatrix of a Matrix by ignoring row r and column c
 func (m Matrix) SubMatrix(r, c int) Matrix {
 	result := Matrix{}
 	rowOffset := 0
@@ -114,13 +116,13 @@ func (m Matrix) SubMatrix(r, c int) Matrix {
 	return result
 }
 
-// Minor returns the minor of a matrix (the determinant of the submatrix of a matrix ignoring row r and column c)
+// Minor returns the minor of a Matrix (the determinant of the subMatrix of a Matrix ignoring row r and column c)
 func (m Matrix) Minor(r, c int) float64 {
 	sub := m.SubMatrix(r, c)
 	return sub.Determinant()
 }
 
-// Cofactor returns the cofactor of a matrix
+// Cofactor returns the cofactor of a Matrix
 func (m Matrix) Cofactor(i, j int) float64 {
 	minor := m.Minor(i, j)
 	if (i+j)%2 == 0 {
@@ -131,15 +133,56 @@ func (m Matrix) Cofactor(i, j int) float64 {
 
 // IsEqual returns the value equality of two matrices
 func (m Matrix) IsEqual(a Matrix) bool {
+	EPSILON := 0.00001
 	if len(m) != len(a) {
 		return false
 	}
 	for i := range m {
 		for j := range a[i] {
-			if m[i][j] != a[i][j] {
+			if math.Abs(m[i][j]-a[i][j]) > EPSILON {
 				return false
 			}
 		}
 	}
 	return true
+}
+
+// IsInvertible returns whether a Matrix can be inverted
+func (m Matrix) IsInvertible() bool {
+	d := m.Determinant()
+	if d == float64(0) {
+		return false
+	}
+	return true
+}
+
+// Clone returns a deep copy of a Matrix
+func (m Matrix) Clone() Matrix {
+	m2 := Matrix{}
+
+	for i := range m {
+		m2 = append(m2, make([]float64, len(m[i])))
+		for j := range m[i] {
+			m2[i][j] = m[i][j]
+		}
+	}
+	return m2
+}
+
+// Invert calculates the inverted form of a Matrix
+func (m Matrix) Invert() Matrix {
+	if !m.IsInvertible() {
+		panic("Matrix is not invertible")
+	}
+
+	m2 := m.Clone()
+
+	for row := range m {
+		for col := range m {
+			c := m.Cofactor(row, col)
+			// [col, row] here accomplishes the transpose operation
+			m2[col][row] = c / m.Determinant()
+		}
+	}
+	return m2
 }

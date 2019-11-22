@@ -303,3 +303,144 @@ func TestCofactor_3(t *testing.T) {
 		t.Errorf("expected %v, got %v", expected, cofactor)
 	}
 }
+
+func TestInvertible_1(t *testing.T) {
+	m := Matrix{
+		{6, 4, 4, 4},
+		{5, 5, 7, 6},
+		{4, -9, 3, -7},
+		{9, 1, 7, -6},
+	}
+
+	isInvertible := m.IsInvertible()
+	expected := true
+
+	if isInvertible != expected {
+		t.Errorf("expected %v, got %v", expected, isInvertible)
+	}
+}
+
+func TestInvertible_2(t *testing.T) {
+	m := Matrix{
+		{-4, 2, -2, 3},
+		{9, 6, 2, 6},
+		{0, -5, 1, -5},
+		{0, 0, 0, 0},
+	}
+
+	isInvertible := m.IsInvertible()
+	expected := false
+
+	if isInvertible != expected {
+		t.Errorf("expected %v, got %v", expected, isInvertible)
+	}
+}
+
+func TestInvert_1(t *testing.T) {
+	m := Matrix{
+		{-5, 2, 6, -8},
+		{1, -5, 1, 8},
+		{7, 7, -6, -7},
+		{1, -3, 7, 4},
+	}
+
+	inverse := m.Invert()
+
+	d := m.Determinant()
+	cof2 := m.Cofactor(3, 2)
+
+	r := inverse[2][3]
+	expected := cof2 / d
+
+	if r != expected {
+		t.Errorf("expected %v, got %v", expected, r)
+	}
+}
+
+func TestInvert_2(t *testing.T) {
+	m := Matrix{
+		{-5, 2, 6, -8},
+		{1, -5, 1, 8},
+		{7, 7, -6, -7},
+		{1, -3, 7, 4},
+	}
+
+	inverse := m.Invert()
+	expected := Matrix{
+		{0.21805, 0.45113, 0.24060, -0.04511},
+		{-0.80827, -1.45677, -0.44361, 0.52068},
+		{-0.07895, -0.22368, -0.05263, 0.19737},
+		{-0.52256, -0.81391, -0.30075, 0.30639},
+	}
+
+	if !inverse.IsEqual(expected) {
+		t.Errorf("expected %v, got %v", expected, inverse)
+	}
+}
+
+func TestInvert_3(t *testing.T) {
+	m := Matrix{
+		{8, -5, 9, 2},
+		{7, 5, 6, 1},
+		{-6, 0, 9, 6},
+		{-3, 0, -9, -4},
+	}
+
+	inverse := m.Invert()
+	expected := Matrix{
+		{-0.15385, -0.15385, -0.28205, -0.53846},
+		{-0.07692, 0.12308, 0.02564, 0.03077},
+		{0.35897, 0.35897, 0.43590, 0.92308},
+		{-0.69231, -0.69231, -0.76923, -1.92308},
+	}
+
+	if !inverse.IsEqual(expected) {
+		t.Errorf("expected %v, got %v", expected, inverse)
+	}
+}
+
+func TestInvert_4(t *testing.T) {
+	m := Matrix{
+		{9, 3, 0, 9},
+		{-5, -2, -6, -3},
+		{-4, 9, 6, 4},
+		{-7, 6, 6, 2},
+	}
+
+	inverse := m.Invert()
+	expected := Matrix{
+		{-0.04074, -0.07778, 0.14444, -0.22222},
+		{-0.07778, 0.03333, 0.36667, -0.33333},
+		{-0.02901, -0.14630, -0.10926, 0.12963},
+		{0.17778, 0.06667, -0.26667, 0.33333},
+	}
+
+	if !inverse.IsEqual(expected) {
+		t.Errorf("expected %v, got %v", expected, inverse)
+	}
+}
+
+func TestMultiplyProductByInverse(t *testing.T) {
+	m1 := Matrix{
+		{3, -9, 7, 3},
+		{3, -8, 2, -9},
+		{-4, 4, 4, 1},
+		{-6, 5, -1, 1},
+	}
+
+	m2 := Matrix{
+		{8, 2, 2, 2},
+		{3, -1, 7, 0},
+		{7, 0, 5, 4},
+		{6, -2, 0, 5},
+	}
+
+	product := m1.Multiply(m2)
+	original := product.Multiply(m2.Invert())
+	isEqual := m1.IsEqual(original)
+	expected := true
+
+	if isEqual != true {
+		t.Errorf("expected %v, got %v", expected, isEqual)
+	}
+}
