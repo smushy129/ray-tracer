@@ -15,7 +15,7 @@ func TestZeroMatrix(t *testing.T) {
 		{0, 0, 0, 0},
 	}
 
-	if !m1.IsEqual(expected) {
+	if !m1.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, m1)
 	}
 }
@@ -29,7 +29,7 @@ func TestIdentityMatrix(t *testing.T) {
 		{0, 0, 0, 1},
 	}
 
-	if !m1.IsEqual(expected) {
+	if !m1.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, m1)
 	}
 }
@@ -50,7 +50,7 @@ func TestIdentityMatrixMultiplication(t *testing.T) {
 		{4, 8, 16, 32},
 	}
 
-	if !result.IsEqual(expected) {
+	if !result.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, result)
 	}
 }
@@ -70,11 +70,11 @@ func TestMatrixEquality(t *testing.T) {
 		{5, 4, 3, 2},
 	}
 
-	IsEqual := m1.IsEqual(m2)
+	isEqual := m1.Equals(m2)
 	expected := true
 
-	if IsEqual != expected {
-		t.Errorf("expected %v, got %v", expected, IsEqual)
+	if isEqual != expected {
+		t.Errorf("expected %v, got %v", expected, isEqual)
 	}
 }
 
@@ -100,7 +100,7 @@ func TestMatrixMultiplication(t *testing.T) {
 		{16, 26, 46, 42},
 	}
 
-	if !m.IsEqual(expected) {
+	if !m.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, m)
 	}
 }
@@ -138,7 +138,7 @@ func TestMatrixTranspose(t *testing.T) {
 		{0, 8, 3, 8},
 	}
 
-	if !transposed.IsEqual(expected) {
+	if !transposed.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, transposed)
 	}
 }
@@ -147,7 +147,7 @@ func TestTransposeIdentityMatrix(t *testing.T) {
 	expected := IdentityMatrix()
 	transposed := expected.Transpose()
 
-	if !transposed.IsEqual(expected) {
+	if !transposed.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, transposed)
 	}
 }
@@ -212,7 +212,7 @@ func TestSubMatrix(t *testing.T) {
 		{-7, -1, 1},
 	}
 
-	if !sub.IsEqual(expected) {
+	if !sub.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sub)
 	}
 
@@ -373,7 +373,7 @@ func TestInvert_2(t *testing.T) {
 		{-0.52256, -0.81391, -0.30075, 0.30639},
 	}
 
-	if !inverse.IsEqual(expected) {
+	if !inverse.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, inverse)
 	}
 }
@@ -394,7 +394,7 @@ func TestInvert_3(t *testing.T) {
 		{-0.69231, -0.69231, -0.76923, -1.92308},
 	}
 
-	if !inverse.IsEqual(expected) {
+	if !inverse.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, inverse)
 	}
 }
@@ -415,7 +415,7 @@ func TestInvert_4(t *testing.T) {
 		{0.17778, 0.06667, -0.26667, 0.33333},
 	}
 
-	if !inverse.IsEqual(expected) {
+	if !inverse.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, inverse)
 	}
 }
@@ -437,10 +437,48 @@ func TestMultiplyProductByInverse(t *testing.T) {
 
 	product := m1.Multiply(m2)
 	original := product.Multiply(m2.Invert())
-	isEqual := m1.IsEqual(original)
+	isEqual := m1.Equals(original)
 	expected := true
 
 	if isEqual != true {
 		t.Errorf("expected %v, got %v", expected, isEqual)
+	}
+}
+
+func TestTranslatePoint(t *testing.T) {
+	translation := TranslationMatrix(5, -3, 2)
+	p := tuple.NewPoint(-3, 4, 5)
+
+	transform := translation.MultiplyTuple(p)
+	expected := tuple.NewPoint(2, 1, 7)
+
+	if !transform.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, transform)
+	}
+}
+
+func TestInverseTranslatePoint(t *testing.T) {
+	translation := TranslationMatrix(5, -3, 2)
+	inv := translation.Invert()
+	p := tuple.NewPoint(-3, 4, 5)
+
+	transform := inv.MultiplyTuple(p)
+	expected := tuple.NewPoint(-8, 7, 3)
+
+	if !transform.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, transform)
+	}
+}
+
+func TestTranslateVector(t *testing.T) {
+	translation := TranslationMatrix(5, -3, 2)
+	inv := translation.Invert()
+	v := tuple.NewVector(-3, 4, 5)
+
+	transform := inv.MultiplyTuple(v)
+	expected := tuple.NewVector(-3, 4, 5)
+
+	if !transform.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, transform)
 	}
 }

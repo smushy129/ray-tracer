@@ -29,6 +29,16 @@ func IdentityMatrix() Matrix {
 	}
 }
 
+// TranslationMatrix returns a Matrix to be used for translation
+func TranslationMatrix(x, y, z float64) Matrix {
+	return Matrix{
+		{1, 0, 0, x},
+		{0, 1, 0, y},
+		{0, 0, 1, z},
+		{0, 0, 0, 1},
+	}
+}
+
 // Multiply returns results the result of Matrix being multiplied by another Matrix
 func (m Matrix) Multiply(a Matrix) Matrix {
 	result := ZeroMatrix()
@@ -131,8 +141,8 @@ func (m Matrix) Cofactor(i, j int) float64 {
 	return -minor
 }
 
-// IsEqual returns the value equality of two matrices
-func (m Matrix) IsEqual(a Matrix) bool {
+// Equals returns the value equality of two matrices
+func (m Matrix) Equals(a Matrix) bool {
 	EPSILON := 0.00001
 	if len(m) != len(a) {
 		return false
