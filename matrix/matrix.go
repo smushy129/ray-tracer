@@ -49,6 +49,35 @@ func ScalingMatrix(x, y, z float64) Matrix {
 	}
 }
 
+// XAxisRotationMatrix returns a Matrix used for rotating points or vectors on the X-axis
+func XAxisRotationMatrix(r float64) Matrix {
+	return Matrix{
+		{1, 0, 0, 0},
+		{0, math.Cos(r), -math.Sin(r), 0},
+		{0, math.Sin(r), math.Cos(r), 0},
+		{0, 0, 0, 1},
+	}
+}
+
+// YAxisRotationMatrix returns a Matrix used for rotating points or vectors on the Y-axis
+func YAxisRotationMatrix(r float64) Matrix {
+	return Matrix{
+		{math.Cos(r), 0, math.Sin(r), 0},
+		{0, 1, 0, 0},
+		{-math.Sin(r), 0, math.Cos(r), 0},
+		{0, 0, 0, 1},
+	}
+}
+
+func ZAxisRotationMatrix(r float64) Matrix {
+	return Matrix{
+		{math.Cos(r), -math.Sin(r), 0, 0},
+		{math.Sin(r), math.Cos(r), 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1},
+	}
+}
+
 // Multiply returns results the result of Matrix being multiplied by another Matrix
 func (m Matrix) Multiply(a Matrix) Matrix {
 	result := ZeroMatrix()

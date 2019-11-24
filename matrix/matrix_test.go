@@ -1,6 +1,7 @@
 package matrix
 
 import (
+	"math"
 	"testing"
 
 	"github.com/kingsleyliao/ray-tracer/tuple"
@@ -529,5 +530,88 @@ func TestNegativeScalingPoint(t *testing.T) {
 
 	if !scaled.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, scaled)
+	}
+}
+
+func TestXAxisRotation_1(t *testing.T) {
+	p := tuple.NewPoint(0, 1, 0)
+	halfQuarter := XAxisRotationMatrix(math.Pi / 4)
+
+	rotated := halfQuarter.MultiplyTuple(p)
+	expected := tuple.NewPoint(0, math.Sqrt(2)/2, math.Sqrt(2)/2)
+
+	if !rotated.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, rotated)
+	}
+}
+
+func TestXAxisRotation_2(t *testing.T) {
+	p := tuple.NewPoint(0, 1, 0)
+	fullQuarter := XAxisRotationMatrix(math.Pi / 2)
+
+	rotated := fullQuarter.MultiplyTuple(p)
+	expected := tuple.NewPoint(0, 0, 1)
+
+	if !rotated.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, rotated)
+	}
+}
+
+func TestInverseXRotation(t *testing.T) {
+	p := tuple.NewPoint(0, 1, 0)
+	halfQuarter := XAxisRotationMatrix(math.Pi / 4)
+
+	inverse := halfQuarter.Invert().MultiplyTuple(p)
+	expected := tuple.NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2)
+
+	if !inverse.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, inverse)
+	}
+}
+func TestYAxisRotation_1(t *testing.T) {
+	p := tuple.NewPoint(0, 0, 1)
+	halfQuarter := YAxisRotationMatrix(math.Pi / 4)
+
+	rotated := halfQuarter.MultiplyTuple(p)
+	expected := tuple.NewPoint(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)
+
+	if !rotated.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, rotated)
+	}
+}
+
+func TestYAxisRotation_2(t *testing.T) {
+	p := tuple.NewPoint(0, 0, 1)
+	fullQuarter := YAxisRotationMatrix(math.Pi / 2)
+
+	rotated := fullQuarter.MultiplyTuple(p)
+	expected := tuple.NewPoint(1, 0, 0)
+
+	if !rotated.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, rotated)
+	}
+}
+
+func TestZAxisRotation_1(t *testing.T) {
+	p := tuple.NewPoint(0, 1, 0)
+	halfQuarter := ZAxisRotationMatrix(math.Pi / 4)
+
+	rotated := halfQuarter.MultiplyTuple(p)
+	expected := tuple.NewPoint(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
+
+	if !rotated.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, rotated)
+	}
+}
+
+func TestZAxisRotation_2(t *testing.T) {
+	p := tuple.NewPoint(0, 1, 0)
+	fullQuarter := ZAxisRotationMatrix(math.Pi / 2)
+
+	rotated := fullQuarter.MultiplyTuple(p)
+	expected := tuple.NewPoint(-1, 0, 0)
+
+	if !rotated.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, rotated)
 	}
 }
