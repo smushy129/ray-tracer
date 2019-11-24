@@ -49,27 +49,23 @@ func ScalingMatrix(x, y, z float64) Matrix {
 	}
 }
 
-// XAxisRotationMatrix returns a Matrix used for rotating points or vectors on the X-axis
-func XAxisRotationMatrix(r float64) Matrix {
-	return Matrix{
-		{1, 0, 0, 0},
-		{0, math.Cos(r), -math.Sin(r), 0},
-		{0, math.Sin(r), math.Cos(r), 0},
-		{0, 0, 0, 1},
+// RotationMatrix returns a Matrix to rotate a point or vector along the specified axis
+func RotationMatrix(axis tuple.Tuple, r float64) Matrix {
+	if axis.X != 0 {
+		return Matrix{
+			{1, 0, 0, 0},
+			{0, math.Cos(r), -math.Sin(r), 0},
+			{0, math.Sin(r), math.Cos(r), 0},
+			{0, 0, 0, 1},
+		}
+	} else if axis.Y != 0 {
+		return Matrix{
+			{math.Cos(r), 0, math.Sin(r), 0},
+			{0, 1, 0, 0},
+			{-math.Sin(r), 0, math.Cos(r), 0},
+			{0, 0, 0, 1},
+		}
 	}
-}
-
-// YAxisRotationMatrix returns a Matrix used for rotating points or vectors on the Y-axis
-func YAxisRotationMatrix(r float64) Matrix {
-	return Matrix{
-		{math.Cos(r), 0, math.Sin(r), 0},
-		{0, 1, 0, 0},
-		{-math.Sin(r), 0, math.Cos(r), 0},
-		{0, 0, 0, 1},
-	}
-}
-
-func ZAxisRotationMatrix(r float64) Matrix {
 	return Matrix{
 		{math.Cos(r), -math.Sin(r), 0, 0},
 		{math.Sin(r), math.Cos(r), 0, 0},

@@ -42,3 +42,27 @@ func (v Vector) Cross(b Vector) Vector {
 		v.X*b.Y-v.Y*b.X,
 	)
 }
+
+func Left() Vector {
+	return NewVector(-1, 0, 0)
+}
+
+func Right() Vector {
+	return NewVector(1, 0, 0)
+}
+
+func Back() Vector {
+	return NewVector(0, 0, 1)
+}
+
+func Front() Vector {
+	return NewVector(0, 0, -1)
+}
+
+func Up() Vector {
+	return NewVector(0, 1, 0)
+}
+
+func Down() Vector {
+	return NewVector(0, -1, 0)
+}

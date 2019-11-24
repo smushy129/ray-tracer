@@ -535,7 +535,8 @@ func TestNegativeScalingPoint(t *testing.T) {
 
 func TestXAxisRotation_1(t *testing.T) {
 	p := tuple.NewPoint(0, 1, 0)
-	halfQuarter := XAxisRotationMatrix(math.Pi / 4)
+	axis := tuple.Right()
+	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	rotated := halfQuarter.MultiplyTuple(p)
 	expected := tuple.NewPoint(0, math.Sqrt(2)/2, math.Sqrt(2)/2)
@@ -547,7 +548,8 @@ func TestXAxisRotation_1(t *testing.T) {
 
 func TestXAxisRotation_2(t *testing.T) {
 	p := tuple.NewPoint(0, 1, 0)
-	fullQuarter := XAxisRotationMatrix(math.Pi / 2)
+	axis := tuple.Right()
+	fullQuarter := RotationMatrix(axis, math.Pi/2)
 
 	rotated := fullQuarter.MultiplyTuple(p)
 	expected := tuple.NewPoint(0, 0, 1)
@@ -559,7 +561,8 @@ func TestXAxisRotation_2(t *testing.T) {
 
 func TestInverseXRotation(t *testing.T) {
 	p := tuple.NewPoint(0, 1, 0)
-	halfQuarter := XAxisRotationMatrix(math.Pi / 4)
+	axis := tuple.Right()
+	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	inverse := halfQuarter.Invert().MultiplyTuple(p)
 	expected := tuple.NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2)
@@ -570,7 +573,8 @@ func TestInverseXRotation(t *testing.T) {
 }
 func TestYAxisRotation_1(t *testing.T) {
 	p := tuple.NewPoint(0, 0, 1)
-	halfQuarter := YAxisRotationMatrix(math.Pi / 4)
+	axis := tuple.Up()
+	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	rotated := halfQuarter.MultiplyTuple(p)
 	expected := tuple.NewPoint(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)
@@ -582,7 +586,8 @@ func TestYAxisRotation_1(t *testing.T) {
 
 func TestYAxisRotation_2(t *testing.T) {
 	p := tuple.NewPoint(0, 0, 1)
-	fullQuarter := YAxisRotationMatrix(math.Pi / 2)
+	axis := tuple.Up()
+	fullQuarter := RotationMatrix(axis, math.Pi/2)
 
 	rotated := fullQuarter.MultiplyTuple(p)
 	expected := tuple.NewPoint(1, 0, 0)
@@ -594,7 +599,8 @@ func TestYAxisRotation_2(t *testing.T) {
 
 func TestZAxisRotation_1(t *testing.T) {
 	p := tuple.NewPoint(0, 1, 0)
-	halfQuarter := ZAxisRotationMatrix(math.Pi / 4)
+	axis := tuple.Back()
+	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	rotated := halfQuarter.MultiplyTuple(p)
 	expected := tuple.NewPoint(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
@@ -606,7 +612,8 @@ func TestZAxisRotation_1(t *testing.T) {
 
 func TestZAxisRotation_2(t *testing.T) {
 	p := tuple.NewPoint(0, 1, 0)
-	fullQuarter := ZAxisRotationMatrix(math.Pi / 2)
+	axis := tuple.Back()
+	fullQuarter := RotationMatrix(axis, math.Pi/2)
 
 	rotated := fullQuarter.MultiplyTuple(p)
 	expected := tuple.NewPoint(-1, 0, 0)
