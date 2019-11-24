@@ -482,3 +482,52 @@ func TestTranslateVector(t *testing.T) {
 		t.Errorf("expected %v, got %v", expected, transform)
 	}
 }
+
+func TestScalingPoint(t *testing.T) {
+	scalar := ScalingMatrix(2, 3, 4)
+	p := tuple.NewPoint(-4, 6, 8)
+
+	scaled := scalar.MultiplyTuple(p)
+	expected := tuple.NewPoint(-8, 18, 32)
+
+	if !scaled.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, scaled)
+	}
+}
+
+func TestScalingVector(t *testing.T) {
+	scalar := ScalingMatrix(2, 3, 4)
+	v := tuple.NewVector(-4, 6, 8)
+
+	scaled := scalar.MultiplyTuple(v)
+	expected := tuple.NewVector(-8, 18, 32)
+
+	if !scaled.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, scaled)
+	}
+}
+
+func TestInverseScalingVector(t *testing.T) {
+	scalar := ScalingMatrix(2, 3, 4)
+	v := tuple.NewVector(-4, 6, 8)
+
+	scaled := scalar.Invert().MultiplyTuple(v)
+	expected := tuple.NewVector(-2, 2, 2)
+
+	if !scaled.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, scaled)
+	}
+}
+
+// AKA Reflection
+func TestNegativeScalingPoint(t *testing.T) {
+	scalar := ScalingMatrix(-1, 1, 1)
+	p := tuple.NewPoint(2, 3, 4)
+
+	scaled := scalar.MultiplyTuple(p)
+	expected := tuple.NewPoint(-2, 3, 4)
+
+	if !scaled.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, scaled)
+	}
+}

@@ -29,12 +29,22 @@ func IdentityMatrix() Matrix {
 	}
 }
 
-// TranslationMatrix returns a Matrix to be used for translation
+// TranslationMatrix returns a Matrix to be used for translating points. Vectors cannot be translated
 func TranslationMatrix(x, y, z float64) Matrix {
 	return Matrix{
 		{1, 0, 0, x},
 		{0, 1, 0, y},
 		{0, 0, 1, z},
+		{0, 0, 0, 1},
+	}
+}
+
+// ScalingMatrix returns a Matrix to be used for scaling points or vectors
+func ScalingMatrix(x, y, z float64) Matrix {
+	return Matrix{
+		{x, 0, 0, 0},
+		{0, y, 0, 0},
+		{0, 0, z, 0},
 		{0, 0, 0, 1},
 	}
 }
