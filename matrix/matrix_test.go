@@ -622,3 +622,112 @@ func TestZAxisRotation_2(t *testing.T) {
 		t.Errorf("expected %v, got %v", expected, rotated)
 	}
 }
+
+func TestShearing_1(t *testing.T) {
+	shear := ShearMatrix(1, 0, 0, 0, 0, 0)
+	p := tuple.NewPoint(2, 3, 4)
+
+	sheared := shear.MultiplyTuple(p)
+	expected := tuple.NewPoint(5, 3, 4)
+
+	if !sheared.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, sheared)
+	}
+}
+
+func TestShearing_2(t *testing.T) {
+	shear := ShearMatrix(0, 1, 0, 0, 0, 0)
+	p := tuple.NewPoint(2, 3, 4)
+
+	sheared := shear.MultiplyTuple(p)
+	expected := tuple.NewPoint(6, 3, 4)
+
+	if !sheared.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, sheared)
+	}
+}
+
+func TestShearing_3(t *testing.T) {
+	shear := ShearMatrix(0, 0, 1, 0, 0, 0)
+	p := tuple.NewPoint(2, 3, 4)
+
+	sheared := shear.MultiplyTuple(p)
+	expected := tuple.NewPoint(2, 5, 4)
+
+	if !sheared.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, sheared)
+	}
+}
+
+func TestShearing_4(t *testing.T) {
+	shear := ShearMatrix(0, 0, 0, 1, 0, 0)
+	p := tuple.NewPoint(2, 3, 4)
+
+	sheared := shear.MultiplyTuple(p)
+	expected := tuple.NewPoint(2, 7, 4)
+
+	if !sheared.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, sheared)
+	}
+}
+
+func TestShearing_5(t *testing.T) {
+	shear := ShearMatrix(0, 0, 0, 0, 1, 0)
+	p := tuple.NewPoint(2, 3, 4)
+
+	sheared := shear.MultiplyTuple(p)
+	expected := tuple.NewPoint(2, 3, 6)
+
+	if !sheared.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, sheared)
+	}
+}
+
+func TestShearing_6(t *testing.T) {
+	shear := ShearMatrix(0, 0, 0, 0, 0, 1)
+	p := tuple.NewPoint(2, 3, 4)
+
+	sheared := shear.MultiplyTuple(p)
+	expected := tuple.NewPoint(2, 3, 7)
+
+	if !sheared.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, sheared)
+	}
+}
+
+// Testing for chaining transformations in sequence.
+// Desired order is: Rotate -> Scale -> Translate
+func TestChainingTransformations_1(t *testing.T) {
+	p1 := tuple.NewPoint(1, 0, 1)
+	rotation := RotationMatrix(tuple.Right(), math.Pi/2)
+	scaling := ScalingMatrix(5, 5, 5)
+	translation := TranslationMatrix(10, 5, 7)
+
+	p2 := rotation.MultiplyTuple(p1)
+
+	p3 := scaling.MultiplyTuple(p2)
+
+	p4 := translation.MultiplyTuple(p3)
+	expected := tuple.NewPoint(15, 0, 7)
+
+	if !p4.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, p4)
+	}
+}
+
+// Testing for chaining transformations in into a single transormation matrix.
+// Desired order is: Rotate -> Scale -> Translate
+func TestChainingTransformations_2(t *testing.T) {
+	p1 := tuple.NewPoint(1, 0, 1)
+	rotation := RotationMatrix(tuple.Right(), math.Pi/2)
+	scaling := ScalingMatrix(5, 5, 5)
+	translation := TranslationMatrix(10, 5, 7)
+
+	transformMatrix := translation.Multiply(scaling).Multiply(rotation)
+	p2 := transformMatrix.MultiplyTuple(p1)
+	expected := tuple.NewPoint(15, 0, 7)
+
+	if !p2.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, p2)
+	}
+}

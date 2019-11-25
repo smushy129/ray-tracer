@@ -74,6 +74,16 @@ func RotationMatrix(axis tuple.Tuple, r float64) Matrix {
 	}
 }
 
+// ShearMatrix returns a Matrix to be used to shear points
+func ShearMatrix(xy, xz, yx, yz, zx, zy float64) Matrix {
+	return Matrix{
+		{1, xy, xz, 0},
+		{yx, 1, yz, 0},
+		{zx, zy, 1, 0},
+		{0, 0, 0, 1},
+	}
+}
+
 // Multiply returns results the result of Matrix being multiplied by another Matrix
 func (m Matrix) Multiply(a Matrix) Matrix {
 	result := ZeroMatrix()
