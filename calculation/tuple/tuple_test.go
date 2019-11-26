@@ -77,6 +77,7 @@ func TestVectorSubtractVector(t *testing.T) {
 	v2 := Tuple{5, 6, 7, 0}
 
 	vector := v1.Subtract(v2)
+	// Vector subtracted from another vector returns a vector, hence W:0
 	expected := Tuple{-2, -4, -6, 0}
 
 	if !vector.Equals(expected) {
@@ -129,6 +130,7 @@ func TestVectorMagnitude_5(t *testing.T) {
 	}
 }
 
+// Magnitude of a normalized vector is 1
 func TestVectorMagnitude_6(t *testing.T) {
 	v := Tuple{1, 2, 3, 0}
 	norm := v.Normalize()
@@ -139,8 +141,10 @@ func TestVectorMagnitude_6(t *testing.T) {
 	}
 }
 
+// Normalizing a vector returns a unit vector
 func TestVectorNormalize_1(t *testing.T) {
 	v := Tuple{4, 0, 0, 0}
+
 	expected := Tuple{1, 0, 0, 0}
 
 	if v.Normalize() != expected {
@@ -148,6 +152,7 @@ func TestVectorNormalize_1(t *testing.T) {
 	}
 }
 
+// Normalizing a vector returns a unit vector
 func TestVectorNormalize_2(t *testing.T) {
 	v := Tuple{1, 2, 3, 0}
 	m := math.Sqrt(14)
@@ -164,6 +169,7 @@ func TestDotProduct(t *testing.T) {
 	v2 := Tuple{2, 3, 4, 0}
 
 	dp := v1.Dot(v2)
+	// Dot product of two Vectors is a float
 	var expected float64 = 20
 
 	if dp != expected {
@@ -176,6 +182,7 @@ func TestCrossProduct_1(t *testing.T) {
 	v2 := Tuple{2, 3, 4, 0}
 
 	c := v1.Cross(v2)
+	// Cross product of two Vectors is another Vector
 	expected := Tuple{-1, 2, -1, 0}
 
 	if c != expected {
@@ -188,6 +195,7 @@ func TestCrossProduct_2(t *testing.T) {
 	v2 := Tuple{2, 3, 4, 0}
 
 	c := v2.Cross(v1)
+	// Cross product of two Vectors is another Vector
 	expected := Tuple{1, -2, 1, 0}
 
 	if c != expected {
