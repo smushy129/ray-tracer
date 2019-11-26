@@ -5,24 +5,79 @@ import (
 	"testing"
 )
 
-func TestNewVector(t *testing.T) {
-	tuple := Tuple{1, 2, 3, 0}
-	point := NewVector(1, 2, 3)
+func TestTupleEquals__true1(t *testing.T) {
+	t1 := Tuple{1, 2, 3, 1}
+	t2 := Tuple{1, 2, 3, 1}
 
-	if point.X != tuple.X ||
-		point.Y != tuple.Y ||
-		point.Z != tuple.Z ||
-		point.W != tuple.W {
-		t.Errorf("got %v, expected %v", point, tuple)
+	isEqual := t1.Equals(t2)
+
+	if isEqual != true {
+		t.Errorf("got %v, expected %v", isEqual, true)
+	}
+}
+
+func TestTupleEquals__true2(t *testing.T) {
+	t1 := Tuple{1, 2, 3.000000001, 1}
+	t2 := Tuple{1, 2, 3, 1}
+
+	isEqual := t1.Equals(t2)
+
+	if isEqual != true {
+		t.Errorf("got %v, expected %v", isEqual, true)
+	}
+}
+
+func TestTupleEquals__false(t *testing.T) {
+	t1 := Tuple{1, 2, 3, 0}
+	t2 := Tuple{1, 2, 3, 1}
+
+	isEqual := t1.Equals(t2)
+
+	if isEqual != false {
+		t.Errorf("got %v, expected %v", isEqual, false)
+	}
+}
+
+func TestTupleAdd(t *testing.T) {
+	t1 := Tuple{3, -2, 5, 1}
+	t2 := Tuple{-2, 3, 1, 0}
+
+	sum := t1.Add(t2)
+	expected := Tuple{1, 1, 6, 1}
+
+	if !sum.Equals(expected) {
+		t.Errorf("got %v, expected %v", sum, expected)
+	}
+}
+
+func TestTupleInvert(t *testing.T) {
+	t1 := Tuple{1, 2, 3, -4}
+
+	inverted := t1.Invert()
+	expected := Tuple{-1, -2, -3, 4}
+
+	if !inverted.Equals(expected) {
+		t.Errorf("got %v, expected %v", inverted, expected)
+	}
+}
+
+func TestTupleScale(t *testing.T) {
+	t1 := Tuple{1, 2, 3, -4}
+
+	scaled := t1.Scale(2)
+	expected := Tuple{2, 4, 6, -8}
+
+	if !scaled.Equals(expected) {
+		t.Errorf("got %v, expected %v", scaled, expected)
 	}
 }
 
 func TestVectorSubtractVector(t *testing.T) {
-	v1 := NewVector(3, 2, 1)
-	v2 := NewVector(5, 6, 7)
+	v1 := Tuple{3, 2, 1, 0}
+	v2 := Tuple{5, 6, 7, 0}
 
 	vector := v1.Subtract(v2)
-	expected := NewVector(-2, -4, -6)
+	expected := Tuple{-2, -4, -6, 0}
 
 	if !vector.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, vector)
@@ -30,7 +85,7 @@ func TestVectorSubtractVector(t *testing.T) {
 }
 
 func TestTupleMagnitude_1(t *testing.T) {
-	v := NewVector(1, 0, 0)
+	v := Tuple{1, 0, 0, 0}
 	var expected float64 = 1
 
 	if v.Magnitude() != expected {
@@ -39,7 +94,7 @@ func TestTupleMagnitude_1(t *testing.T) {
 }
 
 func TestVectorMagnitude_2(t *testing.T) {
-	v := NewVector(0, 1, 0)
+	v := Tuple{0, 1, 0, 0}
 	var expected float64 = 1
 
 	if v.Magnitude() != expected {
@@ -48,7 +103,7 @@ func TestVectorMagnitude_2(t *testing.T) {
 }
 
 func TestVectorMagnitude_3(t *testing.T) {
-	v := NewVector(0, 0, 1)
+	v := Tuple{0, 0, 1, 0}
 	var expected float64 = 1
 
 	if v.Magnitude() != expected {
@@ -57,7 +112,7 @@ func TestVectorMagnitude_3(t *testing.T) {
 }
 
 func TestVectorMagnitude_4(t *testing.T) {
-	v := NewVector(1, 2, 3)
+	v := Tuple{1, 2, 3, 0}
 	var expected = math.Sqrt(14)
 
 	if v.Magnitude() != expected {
@@ -66,7 +121,7 @@ func TestVectorMagnitude_4(t *testing.T) {
 }
 
 func TestVectorMagnitude_5(t *testing.T) {
-	v := NewVector(-1, -2, -3)
+	v := Tuple{-1, -2, -3, 0}
 	var expected = math.Sqrt(14)
 
 	if v.Magnitude() != expected {
@@ -75,7 +130,7 @@ func TestVectorMagnitude_5(t *testing.T) {
 }
 
 func TestVectorMagnitude_6(t *testing.T) {
-	v := NewVector(1, 2, 3)
+	v := Tuple{1, 2, 3, 0}
 	norm := v.Normalize()
 	var expected float64 = 1
 
@@ -85,8 +140,8 @@ func TestVectorMagnitude_6(t *testing.T) {
 }
 
 func TestVectorNormalize_1(t *testing.T) {
-	v := NewVector(4, 0, 0)
-	expected := NewVector(1, 0, 0)
+	v := Tuple{4, 0, 0, 0}
+	expected := Tuple{1, 0, 0, 0}
 
 	if v.Normalize() != expected {
 		t.Errorf("got %v, expected %v", v.Normalize(), expected)
@@ -94,9 +149,9 @@ func TestVectorNormalize_1(t *testing.T) {
 }
 
 func TestVectorNormalize_2(t *testing.T) {
-	v := NewVector(1, 2, 3)
+	v := Tuple{1, 2, 3, 0}
 	m := math.Sqrt(14)
-	expected := NewVector(1/m, 2/m, 3/m)
+	expected := Tuple{1 / m, 2 / m, 3 / m, 0}
 
 	if v.Normalize() != expected {
 		t.Errorf("got %v, expected %v", v.Normalize(), expected)
@@ -105,8 +160,8 @@ func TestVectorNormalize_2(t *testing.T) {
 }
 
 func TestDotProduct(t *testing.T) {
-	v1 := NewVector(1, 2, 3)
-	v2 := NewVector(2, 3, 4)
+	v1 := Tuple{1, 2, 3, 0}
+	v2 := Tuple{2, 3, 4, 0}
 
 	dp := v1.Dot(v2)
 	var expected float64 = 20
@@ -117,11 +172,11 @@ func TestDotProduct(t *testing.T) {
 }
 
 func TestCrossProduct_1(t *testing.T) {
-	v1 := NewVector(1, 2, 3)
-	v2 := NewVector(2, 3, 4)
+	v1 := Tuple{1, 2, 3, 0}
+	v2 := Tuple{2, 3, 4, 0}
 
 	c := v1.Cross(v2)
-	expected := NewVector(-1, 2, -1)
+	expected := Tuple{-1, 2, -1, 0}
 
 	if c != expected {
 		t.Errorf("got %v, expected %v", c, expected)
@@ -129,11 +184,11 @@ func TestCrossProduct_1(t *testing.T) {
 }
 
 func TestCrossProduct_2(t *testing.T) {
-	v1 := NewVector(1, 2, 3)
-	v2 := NewVector(2, 3, 4)
+	v1 := Tuple{1, 2, 3, 0}
+	v2 := Tuple{2, 3, 4, 0}
 
 	c := v2.Cross(v1)
-	expected := NewVector(1, -2, 1)
+	expected := Tuple{1, -2, 1, 0}
 
 	if c != expected {
 		t.Errorf("got %v, expected %v", c, expected)

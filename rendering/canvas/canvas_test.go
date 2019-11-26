@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/tuple"
+	"github.com/kingsleyliao/ray-tracer/rendering/color"
 )
 
 func TestNewCanvas(t *testing.T) {
@@ -23,7 +23,7 @@ func TestNewCanvas(t *testing.T) {
 
 func TestWritePixel(t *testing.T) {
 	c := NewCanvas(10, 20)
-	red := tuple.NewColor(1, 0, 0)
+	red := color.NewColor(1, 0, 0)
 
 	WritePixel(c, 2, 3, red)
 	pixel, err := PixelAt(c, 2, 3)
@@ -53,9 +53,9 @@ func TestToPPM(t *testing.T) {
 
 func TestToPPM_2(t *testing.T) {
 	c := NewCanvas(5, 3)
-	c1 := tuple.NewColor(1.5, 0, 0)
-	c2 := tuple.NewColor(0, 0.5, 0)
-	c3 := tuple.NewColor(-0.5, 0, 1)
+	c1 := color.NewColor(1.5, 0, 0)
+	c2 := color.NewColor(0, 0.5, 0)
+	c3 := color.NewColor(-0.5, 0, 1)
 
 	WritePixel(c, 0, 0, c1)
 	WritePixel(c, 2, 1, c2)
@@ -75,7 +75,7 @@ func TestToPPM_2(t *testing.T) {
 
 func TestToPPM_3(t *testing.T) {
 	c := NewCanvas(10, 2)
-	color := tuple.NewColor(1, 0.8, 0.6)
+	color := color.NewColor(1, 0.8, 0.6)
 
 	for i := range c.Matrix {
 		row := c.Matrix[i]

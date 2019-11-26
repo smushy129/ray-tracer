@@ -2,7 +2,7 @@ package tuple
 
 import "math"
 
-// Tuple represents Points and Vectors
+// Tuple represents Points and Tuples
 type Tuple struct {
 	X float64
 	Y float64
@@ -65,5 +65,38 @@ func (t Tuple) Invert() Tuple {
 		Y: -t.Y,
 		Z: -t.Z,
 		W: -t.W,
+	}
+}
+
+// Normalize normalizes each value of a Vector
+func (t Tuple) Normalize() Tuple {
+	m := t.Magnitude()
+	return Tuple{
+		t.X / m,
+		t.Y / m,
+		t.Z / m,
+		t.W / m,
+	}
+}
+
+// Magnitude finds the distance a Tuple represents with respect to the origin
+func (t Tuple) Magnitude() float64 {
+	return math.Sqrt(math.Pow(t.X, 2) + math.Pow(t.Y, 2) + math.Pow(t.Z, 2) + math.Pow(t.W, 2))
+}
+
+// Dot computes the dot product between two Tuples
+func (t Tuple) Dot(b Tuple) float64 {
+	return t.X*b.X +
+		t.Y*b.Y +
+		t.Z*b.Z +
+		t.W*b.W
+}
+
+// Cross computes the cross product between two Tuples
+func (t Tuple) Cross(b Tuple) Tuple {
+	return Tuple{
+		X: t.Y*b.Z - t.Z*b.Y,
+		Y: t.Z*b.X - t.X*b.Z,
+		Z: t.X*b.Y - t.Y*b.X,
 	}
 }

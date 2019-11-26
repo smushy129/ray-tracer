@@ -5,21 +5,21 @@ import (
 	"math"
 	"strings"
 
-	"github.com/kingsleyliao/ray-tracer/tuple"
+	"github.com/kingsleyliao/ray-tracer/rendering/color"
 )
 
 // Canvas is for drawing pixels on
 type Canvas struct {
 	Width  int
 	Height int
-	Matrix [][]tuple.Color
+	Matrix [][]color.Color
 }
 
 // NewCanvas is a constructor for a Canvas
 func NewCanvas(w, h int) Canvas {
-	m := make([][]tuple.Color, h)
+	m := make([][]color.Color, h)
 	for i := range m {
-		m[i] = make([]tuple.Color, w)
+		m[i] = make([]color.Color, w)
 	}
 	return Canvas{
 		w,
@@ -53,7 +53,7 @@ func createPpmHeader(c Canvas) string {
 }
 
 // WritePixel writes a color to a canvas
-func WritePixel(c Canvas, width, height int, color tuple.Color) error {
+func WritePixel(c Canvas, width, height int, color color.Color) error {
 	if isOutOfBounds(c, width, height) {
 		return fmt.Errorf("%s", "Dimensions out of bounds")
 	}
@@ -62,9 +62,9 @@ func WritePixel(c Canvas, width, height int, color tuple.Color) error {
 }
 
 // PixelAt returns the color of a pixel for given xy coordinates
-func PixelAt(c Canvas, width, height int) (tuple.Color, error) {
+func PixelAt(c Canvas, width, height int) (color.Color, error) {
 	if isOutOfBounds(c, width, height) {
-		return tuple.NewColor(0, 0, 0), fmt.Errorf("%s", "Dimensions out of bounds")
+		return color.NewColor(0, 0, 0), fmt.Errorf("%s", "Dimensions out of bounds")
 	}
 	return c.Matrix[height][width], nil
 }

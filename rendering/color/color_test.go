@@ -1,16 +1,16 @@
-package tuple
+package color
 
 import "testing"
 
 func TestNewColor(t *testing.T) {
-	tuple := Tuple{-0.5, 0.4, 1.7, 0}
-	color := NewColor(-0.5, 0.4, 1.7)
+	c1 := NewColor(-0.5, 0.4, 1.7)
+	c2 := NewColor(-0.5, 0.4, 1.7)
 
-	if color.X != tuple.X ||
-		color.Y != tuple.Y ||
-		color.Z != tuple.Z ||
-		color.W != tuple.W {
-		t.Errorf("got %v, expected %v", color, tuple)
+	if c2.X != c1.X ||
+		c2.Y != c1.Y ||
+		c2.Z != c1.Z ||
+		c2.W != c1.W {
+		t.Errorf("got %v, expected %v", c2, c1)
 	}
 }
 

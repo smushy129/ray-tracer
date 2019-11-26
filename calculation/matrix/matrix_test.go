@@ -4,7 +4,9 @@ import (
 	"math"
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/tuple"
+	"github.com/kingsleyliao/ray-tracer/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/calculation/tuple"
+	"github.com/kingsleyliao/ray-tracer/calculation/vector"
 )
 
 func TestZeroMatrix(t *testing.T) {
@@ -448,10 +450,10 @@ func TestMultiplyProductByInverse(t *testing.T) {
 
 func TestTranslatePoint(t *testing.T) {
 	translation := TranslationMatrix(5, -3, 2)
-	p := tuple.NewPoint(-3, 4, 5)
+	p := point.NewPoint(-3, 4, 5)
 
 	transform := translation.MultiplyTuple(p)
-	expected := tuple.NewPoint(2, 1, 7)
+	expected := point.NewPoint(2, 1, 7)
 
 	if !transform.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, transform)
@@ -461,10 +463,10 @@ func TestTranslatePoint(t *testing.T) {
 func TestInverseTranslatePoint(t *testing.T) {
 	translation := TranslationMatrix(5, -3, 2)
 	inv := translation.Invert()
-	p := tuple.NewPoint(-3, 4, 5)
+	p := point.NewPoint(-3, 4, 5)
 
 	transform := inv.MultiplyTuple(p)
-	expected := tuple.NewPoint(-8, 7, 3)
+	expected := point.NewPoint(-8, 7, 3)
 
 	if !transform.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, transform)
@@ -474,10 +476,10 @@ func TestInverseTranslatePoint(t *testing.T) {
 func TestTranslateVector(t *testing.T) {
 	translation := TranslationMatrix(5, -3, 2)
 	inv := translation.Invert()
-	v := tuple.NewVector(-3, 4, 5)
+	v := vector.NewVector(-3, 4, 5)
 
 	transform := inv.MultiplyTuple(v)
-	expected := tuple.NewVector(-3, 4, 5)
+	expected := vector.NewVector(-3, 4, 5)
 
 	if !transform.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, transform)
@@ -486,10 +488,10 @@ func TestTranslateVector(t *testing.T) {
 
 func TestScalingPoint(t *testing.T) {
 	scalar := ScalingMatrix(2, 3, 4)
-	p := tuple.NewPoint(-4, 6, 8)
+	p := point.NewPoint(-4, 6, 8)
 
 	scaled := scalar.MultiplyTuple(p)
-	expected := tuple.NewPoint(-8, 18, 32)
+	expected := point.NewPoint(-8, 18, 32)
 
 	if !scaled.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, scaled)
@@ -498,10 +500,10 @@ func TestScalingPoint(t *testing.T) {
 
 func TestScalingVector(t *testing.T) {
 	scalar := ScalingMatrix(2, 3, 4)
-	v := tuple.NewVector(-4, 6, 8)
+	v := vector.NewVector(-4, 6, 8)
 
 	scaled := scalar.MultiplyTuple(v)
-	expected := tuple.NewVector(-8, 18, 32)
+	expected := vector.NewVector(-8, 18, 32)
 
 	if !scaled.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, scaled)
@@ -510,10 +512,10 @@ func TestScalingVector(t *testing.T) {
 
 func TestInverseScalingVector(t *testing.T) {
 	scalar := ScalingMatrix(2, 3, 4)
-	v := tuple.NewVector(-4, 6, 8)
+	v := vector.NewVector(-4, 6, 8)
 
 	scaled := scalar.Invert().MultiplyTuple(v)
-	expected := tuple.NewVector(-2, 2, 2)
+	expected := vector.NewVector(-2, 2, 2)
 
 	if !scaled.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, scaled)
@@ -523,10 +525,10 @@ func TestInverseScalingVector(t *testing.T) {
 // AKA Reflection
 func TestNegativeScalingPoint(t *testing.T) {
 	scalar := ScalingMatrix(-1, 1, 1)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	scaled := scalar.MultiplyTuple(p)
-	expected := tuple.NewPoint(-2, 3, 4)
+	expected := point.NewPoint(-2, 3, 4)
 
 	if !scaled.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, scaled)
@@ -534,12 +536,12 @@ func TestNegativeScalingPoint(t *testing.T) {
 }
 
 func TestXAxisRotation_1(t *testing.T) {
-	p := tuple.NewPoint(0, 1, 0)
-	axis := tuple.Right()
+	p := point.NewPoint(0, 1, 0)
+	axis := vector.Right()
 	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	rotated := halfQuarter.MultiplyTuple(p)
-	expected := tuple.NewPoint(0, math.Sqrt(2)/2, math.Sqrt(2)/2)
+	expected := point.NewPoint(0, math.Sqrt(2)/2, math.Sqrt(2)/2)
 
 	if !rotated.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, rotated)
@@ -547,12 +549,12 @@ func TestXAxisRotation_1(t *testing.T) {
 }
 
 func TestXAxisRotation_2(t *testing.T) {
-	p := tuple.NewPoint(0, 1, 0)
-	axis := tuple.Right()
+	p := point.NewPoint(0, 1, 0)
+	axis := vector.Right()
 	fullQuarter := RotationMatrix(axis, math.Pi/2)
 
 	rotated := fullQuarter.MultiplyTuple(p)
-	expected := tuple.NewPoint(0, 0, 1)
+	expected := point.NewPoint(0, 0, 1)
 
 	if !rotated.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, rotated)
@@ -560,24 +562,24 @@ func TestXAxisRotation_2(t *testing.T) {
 }
 
 func TestInverseXRotation(t *testing.T) {
-	p := tuple.NewPoint(0, 1, 0)
-	axis := tuple.Right()
+	p := point.NewPoint(0, 1, 0)
+	axis := vector.Right()
 	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	inverse := halfQuarter.Invert().MultiplyTuple(p)
-	expected := tuple.NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2)
+	expected := point.NewPoint(0, math.Sqrt(2)/2, -math.Sqrt(2)/2)
 
 	if !inverse.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, inverse)
 	}
 }
 func TestYAxisRotation_1(t *testing.T) {
-	p := tuple.NewPoint(0, 0, 1)
-	axis := tuple.Up()
+	p := point.NewPoint(0, 0, 1)
+	axis := vector.Up()
 	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	rotated := halfQuarter.MultiplyTuple(p)
-	expected := tuple.NewPoint(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)
+	expected := point.NewPoint(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)
 
 	if !rotated.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, rotated)
@@ -585,12 +587,12 @@ func TestYAxisRotation_1(t *testing.T) {
 }
 
 func TestYAxisRotation_2(t *testing.T) {
-	p := tuple.NewPoint(0, 0, 1)
-	axis := tuple.Up()
+	p := point.NewPoint(0, 0, 1)
+	axis := vector.Up()
 	fullQuarter := RotationMatrix(axis, math.Pi/2)
 
 	rotated := fullQuarter.MultiplyTuple(p)
-	expected := tuple.NewPoint(1, 0, 0)
+	expected := point.NewPoint(1, 0, 0)
 
 	if !rotated.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, rotated)
@@ -598,12 +600,12 @@ func TestYAxisRotation_2(t *testing.T) {
 }
 
 func TestZAxisRotation_1(t *testing.T) {
-	p := tuple.NewPoint(0, 1, 0)
-	axis := tuple.Back()
+	p := point.NewPoint(0, 1, 0)
+	axis := vector.Back()
 	halfQuarter := RotationMatrix(axis, math.Pi/4)
 
 	rotated := halfQuarter.MultiplyTuple(p)
-	expected := tuple.NewPoint(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
+	expected := point.NewPoint(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
 
 	if !rotated.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, rotated)
@@ -611,12 +613,12 @@ func TestZAxisRotation_1(t *testing.T) {
 }
 
 func TestZAxisRotation_2(t *testing.T) {
-	p := tuple.NewPoint(0, 1, 0)
-	axis := tuple.Back()
+	p := point.NewPoint(0, 1, 0)
+	axis := vector.Back()
 	fullQuarter := RotationMatrix(axis, math.Pi/2)
 
 	rotated := fullQuarter.MultiplyTuple(p)
-	expected := tuple.NewPoint(-1, 0, 0)
+	expected := point.NewPoint(-1, 0, 0)
 
 	if !rotated.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, rotated)
@@ -625,10 +627,10 @@ func TestZAxisRotation_2(t *testing.T) {
 
 func TestShearing_1(t *testing.T) {
 	shear := ShearMatrix(1, 0, 0, 0, 0, 0)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	sheared := shear.MultiplyTuple(p)
-	expected := tuple.NewPoint(5, 3, 4)
+	expected := point.NewPoint(5, 3, 4)
 
 	if !sheared.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sheared)
@@ -637,10 +639,10 @@ func TestShearing_1(t *testing.T) {
 
 func TestShearing_2(t *testing.T) {
 	shear := ShearMatrix(0, 1, 0, 0, 0, 0)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	sheared := shear.MultiplyTuple(p)
-	expected := tuple.NewPoint(6, 3, 4)
+	expected := point.NewPoint(6, 3, 4)
 
 	if !sheared.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sheared)
@@ -649,10 +651,10 @@ func TestShearing_2(t *testing.T) {
 
 func TestShearing_3(t *testing.T) {
 	shear := ShearMatrix(0, 0, 1, 0, 0, 0)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	sheared := shear.MultiplyTuple(p)
-	expected := tuple.NewPoint(2, 5, 4)
+	expected := point.NewPoint(2, 5, 4)
 
 	if !sheared.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sheared)
@@ -661,10 +663,10 @@ func TestShearing_3(t *testing.T) {
 
 func TestShearing_4(t *testing.T) {
 	shear := ShearMatrix(0, 0, 0, 1, 0, 0)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	sheared := shear.MultiplyTuple(p)
-	expected := tuple.NewPoint(2, 7, 4)
+	expected := point.NewPoint(2, 7, 4)
 
 	if !sheared.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sheared)
@@ -673,10 +675,10 @@ func TestShearing_4(t *testing.T) {
 
 func TestShearing_5(t *testing.T) {
 	shear := ShearMatrix(0, 0, 0, 0, 1, 0)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	sheared := shear.MultiplyTuple(p)
-	expected := tuple.NewPoint(2, 3, 6)
+	expected := point.NewPoint(2, 3, 6)
 
 	if !sheared.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sheared)
@@ -685,10 +687,10 @@ func TestShearing_5(t *testing.T) {
 
 func TestShearing_6(t *testing.T) {
 	shear := ShearMatrix(0, 0, 0, 0, 0, 1)
-	p := tuple.NewPoint(2, 3, 4)
+	p := point.NewPoint(2, 3, 4)
 
 	sheared := shear.MultiplyTuple(p)
-	expected := tuple.NewPoint(2, 3, 7)
+	expected := point.NewPoint(2, 3, 7)
 
 	if !sheared.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, sheared)
@@ -698,8 +700,8 @@ func TestShearing_6(t *testing.T) {
 // Testing for chaining transformations in sequence.
 // Desired order is: Rotate -> Scale -> Translate
 func TestChainingTransformations_1(t *testing.T) {
-	p1 := tuple.NewPoint(1, 0, 1)
-	rotation := RotationMatrix(tuple.Right(), math.Pi/2)
+	p1 := point.NewPoint(1, 0, 1)
+	rotation := RotationMatrix(vector.Right(), math.Pi/2)
 	scaling := ScalingMatrix(5, 5, 5)
 	translation := TranslationMatrix(10, 5, 7)
 
@@ -708,7 +710,7 @@ func TestChainingTransformations_1(t *testing.T) {
 	p3 := scaling.MultiplyTuple(p2)
 
 	p4 := translation.MultiplyTuple(p3)
-	expected := tuple.NewPoint(15, 0, 7)
+	expected := point.NewPoint(15, 0, 7)
 
 	if !p4.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, p4)
@@ -718,14 +720,14 @@ func TestChainingTransformations_1(t *testing.T) {
 // Testing for chaining transformations in into a single transormation matrix.
 // Desired order is: Rotate -> Scale -> Translate
 func TestChainingTransformations_2(t *testing.T) {
-	p1 := tuple.NewPoint(1, 0, 1)
-	rotation := RotationMatrix(tuple.Right(), math.Pi/2)
+	p1 := point.NewPoint(1, 0, 1)
+	rotation := RotationMatrix(vector.Right(), math.Pi/2)
 	scaling := ScalingMatrix(5, 5, 5)
 	translation := TranslationMatrix(10, 5, 7)
 
 	transformMatrix := translation.Multiply(scaling).Multiply(rotation)
 	p2 := transformMatrix.MultiplyTuple(p1)
-	expected := tuple.NewPoint(15, 0, 7)
+	expected := point.NewPoint(15, 0, 7)
 
 	if !p2.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, p2)
