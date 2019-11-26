@@ -1,29 +1,30 @@
 package projectile
 
 import (
-	"github.com/kingsleyliao/ray-tracer/tuple"
+	"github.com/kingsleyliao/ray-tracer/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/calculation/vector"
 )
 
 // Environment is the env a projectile is projected in
 type Environment interface {
-	Gravity() tuple.Vector
-	Wind() tuple.Vector
+	Gravity() vector.Vector
+	Wind() vector.Vector
 }
 
 type Earth struct {
-	gravity tuple.Vector
-	wind    tuple.Vector
+	gravity vector.Vector
+	wind    vector.Vector
 }
 
-func NewEarth(gravity, wind tuple.Vector) Earth {
+func NewEarth(gravity, wind vector.Vector) Earth {
 	return Earth{gravity, wind}
 }
 
-func (e Earth) Wind() tuple.Vector {
+func (e Earth) Wind() vector.Vector {
 	return e.wind
 }
 
-func (e Earth) Gravity() tuple.Vector {
+func (e Earth) Gravity() vector.Vector {
 	return e.gravity
 }
 
@@ -33,11 +34,11 @@ type Projectile interface {
 }
 
 type Ray struct {
-	Point    tuple.Point
-	Velocity tuple.Vector
+	Point    point.Point
+	Velocity vector.Vector
 }
 
-func NewRay(p tuple.Point, v tuple.Vector) Ray {
+func NewRay(p point.Point, v vector.Vector) Ray {
 	return Ray{p, v}
 }
 
