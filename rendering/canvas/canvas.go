@@ -36,9 +36,9 @@ func (c Canvas) ToPPM() string {
 		row := c.Matrix[i]
 		line := ""
 		for _, color := range row {
-			line += fmt.Sprintf("%d ", clamp(0, 255, color.X*255))
-			line += fmt.Sprintf("%d ", clamp(0, 255, color.Y*255))
-			line += fmt.Sprintf("%d ", clamp(0, 255, color.Z*255))
+			line += fmt.Sprintf("%d ", clamp(0, 255, color.R*255))
+			line += fmt.Sprintf("%d ", clamp(0, 255, color.G*255))
+			line += fmt.Sprintf("%d ", clamp(0, 255, color.B*255))
 		}
 		line = strings.Trim(line, " ") + "\n"
 		rows += line
