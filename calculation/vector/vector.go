@@ -9,7 +9,7 @@ type Vector = tuple.Tuple
 
 // NewVector returns a new vector in 3D Euclidean space
 func NewVector(x, y, z float64) Vector {
-	return Vector{x, y, z, 0}
+	return Vector{X: x, Y: y, Z: z, W: 0}
 }
 
 // Left returns a Vector pointing in the negative X-axis

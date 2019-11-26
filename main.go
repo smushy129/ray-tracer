@@ -35,7 +35,6 @@ func drawClockface() {
 	for i := 0; i < 13; i++ {
 		position = rotation.MultiplyTuple(position)
 		canvas.WritePixel(c, int(position.X*radius)+center, int(position.Z*radius)+center, white)
-
 	}
 
 	ppm := c.ToPPM()
