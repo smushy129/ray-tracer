@@ -6,9 +6,9 @@ func TestNewColor(t *testing.T) {
 	c1 := NewColor(-0.5, 0.4, 1.7)
 	c2 := NewColor(-0.5, 0.4, 1.7)
 
-	if c2.X != c1.X ||
-		c2.Y != c1.Y ||
-		c2.Z != c1.Z ||
+	if c2.R != c1.R ||
+		c2.G != c1.G ||
+		c2.B != c1.B ||
 		c2.W != c1.W {
 		t.Errorf("got %v, expected %v", c2, c1)
 	}
