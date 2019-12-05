@@ -12,7 +12,7 @@ func TestNewRay(t *testing.T) {
 	direction := vector.NewVector(4, 5, 6)
 
 	ray := NewRay(origin, direction)
-	result := ray.direction == direction && ray.origin == origin
+	result := ray.Direction == direction && ray.Origin == origin
 	expected := true
 
 	if result != expected {

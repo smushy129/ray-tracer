@@ -7,3 +7,4 @@ go test ./calculation/point
 go test ./calculation/matrix
 
 go test ./collision/ray
+go test ./collision/intersection
