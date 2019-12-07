@@ -4,11 +4,11 @@ import (
 	"math"
 
 	"github.com/kingsleyliao/ray-tracer/collision/ray"
-	sphere "github.com/kingsleyliao/ray-tracer/rendering/shape"
+	"github.com/kingsleyliao/ray-tracer/rendering/shape"
 )
 
 // Intersect finds the intersection points (time T) of a ray and a sphere
-func Intersect(s sphere.Sphere, r ray.Ray) []float64 {
+func Intersect(s shape.Sphere, r ray.Ray) []float64 {
 	sphereToRay := r.Origin.Subtract(s.Center)
 
 	a := r.Direction.Dot(r.Direction)

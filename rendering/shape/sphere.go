@@ -1,4 +1,4 @@
-package sphere
+package shape
 
 import (
 	"github.com/kingsleyliao/ray-tracer/calculation/point"
