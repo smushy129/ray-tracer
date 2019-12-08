@@ -3,7 +3,7 @@ package vector
 import (
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/tuple"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
 )
 
 func TestNewVector(t *testing.T) {

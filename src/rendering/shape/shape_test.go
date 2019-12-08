@@ -3,7 +3,7 @@ package shape
 import (
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/matrix"
 )
 
 // Creating a new Sphere has a default Transform of the IdentityMatrix

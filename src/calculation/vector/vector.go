@@ -1,7 +1,7 @@
 package vector
 
 import (
-	"github.com/kingsleyliao/ray-tracer/calculation/tuple"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
 )
 
 // Vector is a type alias for Tuple with w = 0

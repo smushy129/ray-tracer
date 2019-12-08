@@ -4,9 +4,9 @@ import (
 	"math"
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/point"
-	"github.com/kingsleyliao/ray-tracer/calculation/tuple"
-	"github.com/kingsleyliao/ray-tracer/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 )
 
 func TestZeroMatrix(t *testing.T) {

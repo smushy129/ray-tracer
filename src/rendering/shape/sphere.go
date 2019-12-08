@@ -1,9 +1,9 @@
 package shape
 
 import (
-	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
-	"github.com/kingsleyliao/ray-tracer/calculation/point"
-	"github.com/kingsleyliao/ray-tracer/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/matrix"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 )
 
 // Sphere represents a unit sphere

@@ -5,7 +5,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/kingsleyliao/ray-tracer/rendering/color"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/color"
 )
 
 // Canvas is for drawing pixels on

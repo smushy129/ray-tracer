@@ -1,9 +1,9 @@
 package ray
 
 import (
-	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
-	"github.com/kingsleyliao/ray-tracer/calculation/point"
-	"github.com/kingsleyliao/ray-tracer/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/matrix"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 )
 
 // Ray represents a vector that travels through space and hits objects

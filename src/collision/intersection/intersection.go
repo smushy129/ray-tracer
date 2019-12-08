@@ -4,8 +4,8 @@ import (
 	"math"
 	"sort"
 
-	"github.com/kingsleyliao/ray-tracer/collision/ray"
-	"github.com/kingsleyliao/ray-tracer/rendering/shape"
+	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 )
 
 // Intersection encapsulates t and object

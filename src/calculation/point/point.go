@@ -1,6 +1,6 @@
 package point
 
-import "github.com/kingsleyliao/ray-tracer/calculation/tuple"
+import "github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
 
 // Point is a Tuple with w = 1
 type Point = tuple.Tuple

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/rendering/color"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/color"
 )
 
 func TestNewCanvas(t *testing.T) {

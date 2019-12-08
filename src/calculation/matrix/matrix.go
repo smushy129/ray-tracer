@@ -3,7 +3,7 @@ package matrix
 import (
 	"math"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/tuple"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
 )
 
 // Matrix represents the rotation, scalar, and positional data for a node

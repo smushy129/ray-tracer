@@ -3,8 +3,8 @@ package point
 import (
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/tuple"
-	vector "github.com/kingsleyliao/ray-tracer/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
+	vector "github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 )
 
 func TestNewPoint(t *testing.T) {

@@ -3,11 +3,11 @@ package intersection
 import (
 	"testing"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
-	"github.com/kingsleyliao/ray-tracer/calculation/point"
-	"github.com/kingsleyliao/ray-tracer/calculation/vector"
-	"github.com/kingsleyliao/ray-tracer/collision/ray"
-	"github.com/kingsleyliao/ray-tracer/rendering/shape"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/matrix"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 )
 
 // An Intersection encapsulates t and object

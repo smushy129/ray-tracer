@@ -4,17 +4,17 @@ import (
 	"math"
 	"os"
 
-	"github.com/kingsleyliao/ray-tracer/collision/intersection"
-	"github.com/kingsleyliao/ray-tracer/collision/ray"
+	"github.com/kingsleyliao/ray-tracer/src/collision/intersection"
+	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
 
-	"github.com/kingsleyliao/ray-tracer/rendering/shape"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 
-	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
-	"github.com/kingsleyliao/ray-tracer/calculation/point"
-	"github.com/kingsleyliao/ray-tracer/calculation/vector"
-	"github.com/kingsleyliao/ray-tracer/collision/projectile"
-	"github.com/kingsleyliao/ray-tracer/rendering/canvas"
-	"github.com/kingsleyliao/ray-tracer/rendering/color"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/matrix"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/collision/projectile"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/canvas"
+	"github.com/kingsleyliao/ray-tracer/src/rendering/color"
 )
 
 const rendersDir = "./renders/"

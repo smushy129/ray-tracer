@@ -1,8 +1,8 @@
 package projectile
 
 import (
-	"github.com/kingsleyliao/ray-tracer/calculation/point"
-	"github.com/kingsleyliao/ray-tracer/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 )
 
 // Environment is the env a projectile is projected in
