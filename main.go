@@ -1,9 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"os"
+
+	"github.com/kingsleyliao/ray-tracer/collision/intersection"
+	"github.com/kingsleyliao/ray-tracer/collision/ray"
+
+	"github.com/kingsleyliao/ray-tracer/rendering/shape"
 
 	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
 	"github.com/kingsleyliao/ray-tracer/calculation/point"
@@ -16,8 +20,45 @@ import (
 const rendersDir = "./renders/"
 
 func main() {
-	drawClockface()
-	drawParabola()
+	// drawClockface()
+	// drawParabola()
+	drawRedSphere()
+}
+
+func drawRedSphere() {
+	rayOrigin := point.NewPoint(0, 0, -5)
+	wallZ := 10.0
+	wallSize := 7.0
+	canvasPixels := 500
+
+	pixelSize := wallSize / float64(canvasPixels)
+	wallExtent := wallSize / 2
+
+	c := canvas.NewCanvas(canvasPixels, canvasPixels)
+	color := color.NewColor(1, 0, 0)
+	shape := shape.NewSphere()
+
+	for y := 0; y < canvasPixels; y++ {
+		worldY := wallExtent - pixelSize*float64(y)
+
+		for x := 0; x < canvasPixels; x++ {
+			worldX := -wallExtent + pixelSize*float64(x)
+
+			position := point.NewPoint(worldX, worldY, wallZ)
+
+			r := ray.NewRay(rayOrigin, position.Subtract(rayOrigin).Normalize())
+			xs := intersection.Intersect(shape, r)
+
+			// _, ok := intersection.Hit(xs)
+			// fmt.Println(ok)
+			if _, ok := intersection.Hit(xs); ok {
+				canvas.WritePixel(c, x, y, color)
+			}
+		}
+	}
+
+	ppm := c.ToPPM()
+	outputPPM(ppm, "red-giant.ppm")
 }
 
 func drawClockface() {
@@ -38,14 +79,7 @@ func drawClockface() {
 	}
 
 	ppm := c.ToPPM()
-
-	f, err := os.Create(rendersDir + "clock-face.ppm")
-	if err != nil {
-		panic(err)
-	}
-
-	f.WriteString(ppm)
-
+	outputPPM(ppm, "clock-face.ppm")
 }
 
 func drawParabola() {
@@ -66,17 +100,16 @@ func drawParabola() {
 	}
 
 	ppm := c.ToPPM()
+	outputPPM(ppm, "inverted-parabola.ppm")
+}
 
-	f, err := os.Create(rendersDir + "inverted-parabola.ppm")
+func outputPPM(ppm string, name string) {
+	f, err := os.Create(rendersDir + name)
+	defer f.Close()
+
 	if err != nil {
 		panic(err)
 	}
 
 	f.WriteString(ppm)
-}
-
-func printMatrix(s [][]float64) {
-	for i := range s {
-		fmt.Println(s[i])
-	}
 }
