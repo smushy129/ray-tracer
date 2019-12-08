@@ -22,7 +22,7 @@ func TestIntersection_1(t *testing.T) {
 	}
 }
 
-// A ray intersects a sphere at two points
+// A Ray intersects a Sphere at two Points
 func TestIntersect_1(t *testing.T) {
 	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
 	s := shape.NewSphere()
@@ -37,7 +37,7 @@ func TestIntersect_1(t *testing.T) {
 	}
 }
 
-// A ray intersects a sphere at a tangent
+// A Ray intersects a Sphere at a tangent
 func TestIntersect_2(t *testing.T) {
 	r := ray.NewRay(point.NewPoint(0, 1, -5), vector.NewVector(0, 0, 1))
 	s := shape.NewSphere()
@@ -53,7 +53,7 @@ func TestIntersect_2(t *testing.T) {
 	}
 }
 
-// A ray misses a sphere
+// A Ray misses a Sphere
 func TestIntersect_3(t *testing.T) {
 	r := ray.NewRay(point.NewPoint(0, 2, -5), vector.NewVector(0, 0, 1))
 	s := shape.NewSphere()
@@ -68,7 +68,7 @@ func TestIntersect_3(t *testing.T) {
 	}
 }
 
-// A ray originates in a sphere
+// A Ray originates in a Sphere
 func TestIntersect_4(t *testing.T) {
 	r := ray.NewRay(point.NewPoint(0, 0, 0), vector.NewVector(0, 0, 1))
 	s := shape.NewSphere()
@@ -84,7 +84,7 @@ func TestIntersect_4(t *testing.T) {
 	}
 }
 
-// A sphere is behind a ray
+// A Sphere is behind a Ray
 func TestIntersect_5(t *testing.T) {
 	r := ray.NewRay(point.NewPoint(0, 0, 5), vector.NewVector(0, 0, 1))
 	s := shape.NewSphere()
@@ -97,5 +97,63 @@ func TestIntersect_5(t *testing.T) {
 
 	if expected != true || expected1 != true || expected2 != true {
 		t.Errorf("expected %v, %v, %v got %v, %v, %v", expected, expected1, expected2, len(xs), xs[0], xs[1])
+	}
+}
+
+// The Hit, when all Intersections have positive T
+func TestHit_1(t *testing.T) {
+	s := shape.NewSphere()
+	i1 := NewIntersection(1, s)
+	i2 := NewIntersection(2, s)
+	xs := Intersections(i1, i2)
+
+	i, _ := Hit(xs)
+
+	if i != i1 {
+		t.Errorf("expected %v, got %v", i1, i)
+	}
+}
+
+// The Hit, when some Intersections have negative T
+func TestHit_2(t *testing.T) {
+	s := shape.NewSphere()
+	i1 := NewIntersection(-1, s)
+	i2 := NewIntersection(1, s)
+	xs := Intersections(i2, i1)
+
+	i, _ := Hit(xs)
+
+	if i != i2 {
+		t.Errorf("expected %v, got %v", i2, i)
+	}
+}
+
+// The Hit, when all Intersections have negative T
+func TestHit_3(t *testing.T) {
+	s := shape.NewSphere()
+	i1 := NewIntersection(-2, s)
+	i2 := NewIntersection(-1, s)
+	xs := Intersections(i2, i1)
+
+	_, ok := Hit(xs)
+
+	if ok != false {
+		t.Errorf("expected %v, got %v", false, ok)
+	}
+}
+
+// The Hit is always the lowest non-negative intersection
+func TestHit_4(t *testing.T) {
+	s := shape.NewSphere()
+	i1 := NewIntersection(5, s)
+	i2 := NewIntersection(7, s)
+	i3 := NewIntersection(-3, s)
+	i4 := NewIntersection(2, s)
+	xs := Intersections(i1, i2, i3, i4)
+
+	i, _ := Hit(xs)
+
+	if i != i4 {
+		t.Errorf("expected %v, got %v", i4, i)
 	}
 }
