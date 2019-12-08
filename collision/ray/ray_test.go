@@ -3,6 +3,8 @@ package ray
 import (
 	"testing"
 
+	"github.com/kingsleyliao/ray-tracer/calculation/matrix"
+
 	"github.com/kingsleyliao/ray-tracer/calculation/point"
 	"github.com/kingsleyliao/ray-tracer/calculation/vector"
 )
@@ -61,5 +63,39 @@ func TestPositionAt_4(t *testing.T) {
 
 	if !position.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, position)
+	}
+}
+
+func TestTransform_1(t *testing.T) {
+	r := NewRay(point.NewPoint(1, 2, 3), vector.NewVector(0, 1, 0))
+	m := matrix.TranslationMatrix(3, 4, 5)
+	r2 := r.Transform(m)
+
+	expectedOrigin := point.NewPoint(4, 6, 8)
+	expectedDirection := vector.NewVector(0, 1, 0)
+
+	if !expectedOrigin.Equals(r2.Origin) {
+		t.Errorf("expected %v, got %v", expectedOrigin, r2.Origin)
+	}
+
+	if !expectedDirection.Equals(r2.Direction) {
+		t.Errorf("expected %v, got %v", expectedDirection, r2.Direction)
+	}
+}
+
+func TestTransform_2(t *testing.T) {
+	r := NewRay(point.NewPoint(1, 2, 3), vector.NewVector(0, 1, 0))
+	m := matrix.ScalingMatrix(2, 3, 4)
+	r2 := r.Transform(m)
+
+	expectedOrigin := point.NewPoint(2, 6, 12)
+	expectedDirection := vector.NewVector(0, 3, 0)
+
+	if !expectedOrigin.Equals(r2.Origin) {
+		t.Errorf("expected %v, got %v", expectedOrigin, r2.Origin)
+	}
+
+	if !expectedDirection.Equals(r2.Direction) {
+		t.Errorf("expected %v, got %v", expectedDirection, r2.Direction)
 	}
 }

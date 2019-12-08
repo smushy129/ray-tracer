@@ -14,6 +14,12 @@ type Intersection struct {
 	Object shape.Sphere
 }
 
+// Equals compares Intersections for equality
+func (i Intersection) Equals(i2 Intersection) bool {
+	return i.T == i2.T &&
+		i.Object.Equals(i2.Object)
+}
+
 // ByT is used to sort Intersections by T value
 type ByT []Intersection
 
@@ -40,19 +46,20 @@ func Intersections(xs ...Intersection) []Intersection {
 
 // Intersect finds the intersection points (time T) of a ray and a sphere
 func Intersect(s shape.Sphere, r ray.Ray) []Intersection {
-	sphereToRay := r.Origin.Subtract(s.Center)
+	r2 := r.Transform(s.Transform.Invert())
+	sphereToRay := r2.Origin.Subtract(s.Center)
 
-	a := r.Direction.Dot(r.Direction)
-	b := 2.0 * r.Direction.Dot(sphereToRay)
+	a := r2.Direction.Dot(r2.Direction)
+	b := 2.0 * r2.Direction.Dot(sphereToRay)
 	c := sphereToRay.Dot(sphereToRay) - 1
 
-	discrminant := (b * b) - (4 * a * c)
-	if discrminant < 0 {
+	discriminant := (b * b) - (4 * a * c)
+	if discriminant < 0 {
 		return []Intersection{}
 	}
 
-	t1 := (-b - math.Sqrt(discrminant)) / (2 * a)
-	t2 := (-b + math.Sqrt(discrminant)) / (2 * a)
+	t1 := (-b - math.Sqrt(discriminant)) / (2 * a)
+	t2 := (-b + math.Sqrt(discriminant)) / (2 * a)
 
 	i1 := Intersection{T: t1, Object: s}
 	i2 := Intersection{T: t2, Object: s}
