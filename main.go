@@ -20,8 +20,8 @@ import (
 const rendersDir = "./renders/"
 
 func main() {
-	// drawClockface()
-	// drawParabola()
+	drawClockface()
+	drawParabola()
 	drawRedSphere()
 }
 
@@ -38,12 +38,19 @@ func drawRedSphere() {
 	color := color.NewColor(1, 0, 0)
 	shape := shape.NewSphere()
 
+	// For each row of pixels on the canvas
 	for y := 0; y < canvasPixels; y++ {
+
+		// Compute the world Y coordinate (top = +wallExtent, bottom = -wallExtent)
 		worldY := wallExtent - pixelSize*float64(y)
 
+		// For each column of pixels
 		for x := 0; x < canvasPixels; x++ {
+
+			// Compute the world Y coordinate (left = -wallExtent, right = +wallExtent)
 			worldX := -wallExtent + pixelSize*float64(x)
 
+			// Describes the point on the wall that the ray will target
 			position := point.NewPoint(worldX, worldY, wallZ)
 
 			r := ray.NewRay(rayOrigin, position.Subtract(rayOrigin).Normalize())

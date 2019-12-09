@@ -12,6 +12,11 @@ func NewVector(x, y, z float64) Vector {
 	return Vector{X: x, Y: y, Z: z, W: 0}
 }
 
+// Zero returns a Vector of zero values
+func Zero() Vector {
+	return NewVector(0, 0, 0)
+}
+
 // Left returns a Vector pointing in the negative X-axis
 func Left() Vector {
 	return NewVector(-1, 0, 0)

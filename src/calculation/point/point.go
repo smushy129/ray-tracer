@@ -9,3 +9,8 @@ type Point = tuple.Tuple
 func NewPoint(x, y, z float64) Point {
 	return Point{X: x, Y: y, Z: z, W: 1}
 }
+
+// Zero returns a Point of zero values
+func Zero() Point {
+	return NewPoint(0, 0, 0)
+}
