@@ -29,7 +29,12 @@ func (s *Sphere) SetTransform(m matrix.Matrix) {
 
 // NormalAt finds the normal vector of a point on the surface of a Sphere
 func (s Sphere) NormalAt(p point.Point) vector.Vector {
-	return p.Subtract(point.Zero()).Normalize()
+	objectPoint := s.Transform.Invert().MultiplyTuple(p)
+	objectNormal := objectPoint.Subtract(vector.Zero())
+	worldNormal := s.Transform.Invert().Transpose().MultiplyTuple(objectNormal)
+	worldNormal.W = 0
+
+	return worldNormal.Normalize()
 }
 
 // Equals compares Spheres for equality

@@ -81,3 +81,32 @@ func TestNormalAt_4(t *testing.T) {
 		t.Errorf("expected %v, got %v", expected, n)
 	}
 }
+
+// Computing the normal on a translated Sphere
+func TestNormalAt_5(t *testing.T) {
+	s := NewSphere()
+	s.SetTransform(matrix.TranslationMatrix(0, 1, 0))
+	n := s.NormalAt(point.NewPoint(0, 1.70711, -0.70711))
+
+	expected := vector.NewVector(0, 0.70711, -0.70711)
+
+	if !n.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, n)
+	}
+}
+
+// Computing the normal on a transformed Sphere
+func TestNormalAt_6(t *testing.T) {
+	s := NewSphere()
+	m := matrix.ScalingMatrix(1, 0.5, 1).Multiply(matrix.RotationMatrix(vector.Back(), math.Pi/5))
+	s.SetTransform(m)
+
+	v := math.Sqrt(2) / 2
+	n := s.NormalAt(point.NewPoint(0, v, -v))
+
+	expected := vector.NewVector(0, 0.97014, -0.24254)
+
+	if !n.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, n)
+	}
+}

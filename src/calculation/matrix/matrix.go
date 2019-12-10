@@ -3,6 +3,8 @@ package matrix
 import (
 	"math"
 
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
+
 	"github.com/kingsleyliao/ray-tracer/src/calculation/tuple"
 )
 
@@ -50,7 +52,7 @@ func ScalingMatrix(x, y, z float64) Matrix {
 }
 
 // RotationMatrix returns a Matrix to rotate a point or vector along the specified axis
-func RotationMatrix(axis tuple.Tuple, r float64) Matrix {
+func RotationMatrix(axis vector.Vector, r float64) Matrix {
 	if axis.X != 0 {
 		return Matrix{
 			{1, 0, 0, 0},
