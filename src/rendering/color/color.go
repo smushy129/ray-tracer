@@ -76,3 +76,8 @@ func (c Color) Equals(c1 Color) bool {
 	}
 	return true
 }
+
+// Black returns the RGB values for black
+func Black() Color {
+	return NewColor(0, 0, 0)
+}

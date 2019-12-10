@@ -4,6 +4,8 @@ import (
 	"math"
 	"testing"
 
+	"github.com/kingsleyliao/ray-tracer/src/rendering/material"
+
 	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
 	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 
@@ -18,6 +20,32 @@ func TestNewSphere(t *testing.T) {
 
 	if !s.Transform.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, s.Transform)
+	}
+}
+
+// Creating a sphere has a default Material
+func TestDefaultMaterial(t *testing.T) {
+	s := NewSphere()
+	m := s.Material
+
+	expected := material.NewMaterial()
+
+	if m != expected {
+		t.Errorf("expected %v, got %v", expected, m)
+	}
+}
+
+// A Sphere can be assigned a Material
+func TestAssignMaterial(t *testing.T) {
+	s := NewSphere()
+	m := material.NewMaterial()
+	m.Ambient = 1
+	s.Material = m
+
+	expected := m
+
+	if expected != s.Material {
+		t.Errorf("expected %v, got %v", expected, expected == s.Material)
 	}
 }
 

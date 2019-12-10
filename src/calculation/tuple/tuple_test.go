@@ -202,3 +202,29 @@ func TestCrossProduct_2(t *testing.T) {
 		t.Errorf("got %v, expected %v", c, expected)
 	}
 }
+
+// Reflecting a Vector approaching at 45˚
+func TestReflectVector_1(t *testing.T) {
+	v := Tuple{1, -1, 0, 0}
+	n := Tuple{0, 1, 0, 0}
+
+	r := v.Reflect(n)
+	expected := Tuple{1, 1, 0, 0}
+
+	if !r.Equals(expected) {
+		t.Errorf("got %v, expected %v", r, expected)
+	}
+}
+
+// Reflecting a Vector off a slanted surface
+func TestReflectVector_2(t *testing.T) {
+	v := Tuple{0, -1, 0, 0}
+	n := Tuple{math.Sqrt(2) / 2, math.Sqrt(2) / 2, 0, 0}
+
+	r := v.Reflect(n)
+	expected := Tuple{1, 0, 0, 0}
+
+	if !r.Equals(expected) {
+		t.Errorf("got %v, expected %v", r, expected)
+	}
+}

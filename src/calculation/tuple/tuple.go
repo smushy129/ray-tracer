@@ -100,3 +100,9 @@ func (t Tuple) Cross(b Tuple) Tuple {
 		Z: t.X*b.Y - t.Y*b.X,
 	}
 }
+
+// Reflect returns the reflection vector baesd on the normal of a surface
+func (t Tuple) Reflect(normal Tuple) Tuple {
+	dot := t.Dot(normal)
+	return t.Subtract(normal.Scale(2).Scale(dot))
+}
