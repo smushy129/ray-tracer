@@ -1,6 +1,15 @@
 # Ray Tracer
 
-### A ray tracer for rendering 3D objects
+This is a ray tracing library capable of rendering 3D objects with realistic lights, shading, and shadows. It contains the primitives and APIs necessary creating a 3D scene including:
+
+- Vectors
+- Points
+- Matrices
+- Rays
+- Lighting
+- Colors
+- Shapes
+- Intersections/Hit testing
 
 Below are some samples of what this ray tracer is capable of rendering:
 
