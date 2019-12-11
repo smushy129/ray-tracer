@@ -11,7 +11,7 @@ This is a ray tracing library capable of rendering 3D objects with realistic lig
 - Shapes
 - Intersections/Hit testing
 
-Below are some samples of what this ray tracer is capable of rendering:
+## Examples
 
 #### Purple Giant
 
