@@ -4,6 +4,9 @@ import (
 	"math"
 	"sort"
 
+	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
+
 	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
 	"github.com/kingsleyliao/ray-tracer/src/env/world"
 	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
@@ -99,4 +102,24 @@ func IntersectWorld(w world.World, r ray.Ray) ByT {
 	}
 	sort.Sort(intersections)
 	return intersections
+}
+
+// PreIntersection are
+type PreIntersection struct {
+	T       float64
+	Object  shape.Sphere
+	Point   point.Point
+	EyeV    vector.Vector
+	NormalV vector.Vector
+}
+
+// CalculatePreIntersection the state of an Intersection
+func CalculatePreIntersection(i Intersection, r ray.Ray) PreIntersection {
+	return PreIntersection{
+		T:       i.T,
+		Object:  i.Object,
+		Point:   r.PositionAt(i.T),
+		EyeV:    r.Direction.Invert(),
+		NormalV: i.Object.NormalAt(r.PositionAt(i.T)),
+	}
 }
