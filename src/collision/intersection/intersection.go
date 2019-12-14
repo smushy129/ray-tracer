@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
+	"github.com/kingsleyliao/ray-tracer/src/env/world"
 	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 )
 
@@ -88,4 +89,14 @@ func Hit(xs []Intersection) (x Intersection, ok bool) {
 		return hit, false
 	}
 	return hit, true
+}
+
+// IntersectWorld returns a all the objects in a world intersected by a Ray
+func IntersectWorld(w world.World, r ray.Ray) ByT {
+	intersections := ByT{}
+	for _, s := range w.Objects {
+		intersections = append(intersections, Intersect(s, r)...)
+	}
+	sort.Sort(intersections)
+	return intersections
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
 	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
+	"github.com/kingsleyliao/ray-tracer/src/env/world"
 	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 )
 
@@ -194,5 +195,16 @@ func TestIntersectingSphere_2(t *testing.T) {
 
 	if expected != len(xs) {
 		t.Errorf("expected %v, got %v", expected, len(xs))
+	}
+}
+
+// Intersect a world with a ray
+func TestIntersectWorld(t *testing.T) {
+	w := world.DefaultWorld()
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	xs := IntersectWorld(w, r)
+
+	if xs[0].T != 4 {
+		t.Errorf("expected %v, got %v", 4, xs[0].T)
 	}
 }

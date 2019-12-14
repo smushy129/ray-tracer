@@ -23,6 +23,11 @@ func NewPointLight(p point.Point, i color.Color) Light {
 	}
 }
 
+// Equals compares a Light of equality
+func (l Light) Equals(l2 Light) bool {
+	return l.Intensity.Equals(l2.Intensity) && l.Position.Equals(l2.Position)
+}
+
 // Lighting returns a Color based on the Lighting
 func Lighting(m material.Material, l Light, p point.Point, eyeV, normalV vector.Vector) color.Color {
 	// Combine the surface color witht he light's color and intensity
