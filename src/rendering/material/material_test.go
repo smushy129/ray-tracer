@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewMaterial(t *testing.T) {
-	m := NewMaterial()
+	m := DefaultMaterial()
 
 	if m.Color != color.NewColor(1, 1, 1) {
 		t.Errorf("expected %v, got %v", color.NewColor(1, 1, 1), m.Color)

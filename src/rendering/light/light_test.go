@@ -29,7 +29,7 @@ func TestNewPointLight(t *testing.T) {
 
 // Lighting with the eye between the light and the surface
 func TestLighting_1(t *testing.T) {
-	m := material.NewMaterial()
+	m := material.DefaultMaterial()
 	p := point.Zero()
 	eyeV := vector.NewVector(0, 0, -1)
 	normalV := vector.NewVector(0, 0, -1)
@@ -46,7 +46,7 @@ func TestLighting_1(t *testing.T) {
 
 // Lighting with the eye between the light and surface, eye offset 45˚
 func TestLighting_2(t *testing.T) {
-	m := material.NewMaterial()
+	m := material.DefaultMaterial()
 	p := point.Zero()
 	eyeV := vector.NewVector(0, math.Sqrt(2)/2, math.Sqrt(2)/2)
 	normalV := vector.NewVector(0, 0, -1)
@@ -63,7 +63,7 @@ func TestLighting_2(t *testing.T) {
 
 // Lighting with eye opposite surface, light offset 45˚
 func TestLighting_3(t *testing.T) {
-	m := material.NewMaterial()
+	m := material.DefaultMaterial()
 	p := point.Zero()
 	eyeV := vector.NewVector(0, 0, -1)
 	normalV := vector.NewVector(0, 0, -1)
@@ -80,7 +80,7 @@ func TestLighting_3(t *testing.T) {
 
 // Lighting with eye in the path of the reflection vector
 func TestLighting_4(t *testing.T) {
-	m := material.NewMaterial()
+	m := material.DefaultMaterial()
 	p := point.Zero()
 	eyeV := vector.NewVector(0, -math.Sqrt(2)/2, -math.Sqrt(2)/2)
 	normalV := vector.NewVector(0, 0, -1)
@@ -97,7 +97,7 @@ func TestLighting_4(t *testing.T) {
 
 // Lighting with the light behind the surface
 func TestLighting_5(t *testing.T) {
-	m := material.NewMaterial()
+	m := material.DefaultMaterial()
 	p := point.Zero()
 	eyeV := vector.NewVector(0, 0, -1)
 	normalV := vector.NewVector(0, 0, -1)

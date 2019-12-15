@@ -21,7 +21,7 @@ func NewSphere() Sphere {
 		Center:    point.NewPoint(0, 0, 0),
 		Radius:    vector.NewVector(1, 1, 1),
 		Transform: matrix.IdentityMatrix(),
-		Material:  material.NewMaterial(),
+		Material:  material.DefaultMaterial(),
 	}
 }
 
@@ -33,7 +33,7 @@ func (s *Sphere) SetTransform(m matrix.Matrix) {
 // NormalAt finds the normal vector of a point on the surface of a Sphere
 func (s Sphere) NormalAt(p point.Point) vector.Vector {
 	objectPoint := s.Transform.Invert().MultiplyTuple(p)
-	objectNormal := objectPoint.Subtract(vector.Zero())
+	objectNormal := objectPoint.Subtract(point.Zero())
 	worldNormal := s.Transform.Invert().Transpose().MultiplyTuple(objectNormal)
 	worldNormal.W = 0
 

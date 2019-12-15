@@ -5,6 +5,10 @@ import (
 
 	"github.com/kingsleyliao/ray-tracer/src/calculation/matrix"
 	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
+	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
+	"github.com/kingsleyliao/ray-tracer/src/collision/intersection"
+	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
+
 	"github.com/kingsleyliao/ray-tracer/src/rendering/color"
 	"github.com/kingsleyliao/ray-tracer/src/rendering/light"
 	"github.com/kingsleyliao/ray-tracer/src/rendering/material"
@@ -38,7 +42,203 @@ func TestDefaultWorld(t *testing.T) {
 	}
 }
 
-// Intersecting a world with a ray
-func TestIntersectRayWithWorld(t *testing.T) {
+// Intersect a world with a ray
+func TestIntersectWorld(t *testing.T) {
+	w := DefaultWorld()
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	xs := IntersectWorld(w, r)
 
+	if xs[0].T != 4 {
+		t.Errorf("expected %v, got %v", 4, xs[0].T)
+	}
+
+	if xs[1].T != 4.5 {
+		t.Errorf("expected %v, got %v", 4.5, xs[1].T)
+	}
+
+	if xs[2].T != 5.5 {
+		t.Errorf("expected %v, got %v", 5.5, xs[2].T)
+	}
+
+	if xs[3].T != 6 {
+		t.Errorf("expected %v, got %v", 6, xs[3].T)
+	}
+}
+
+// Precomputing the state of an intersection
+func TestPrepareShadeHit_1(t *testing.T) {
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	shape := shape.NewSphere()
+	xs := intersection.NewIntersection(4, shape)
+	comps := PrepareShadeHit(xs, r)
+
+	if comps.T != xs.T {
+		t.Errorf("expected %v, got %v", xs.T, comps.T)
+	}
+
+	if !comps.Object.Equals(xs.Object) {
+		t.Errorf("expected %v, got %v", xs.Object, comps.Object)
+	}
+
+	if comps.Point != point.NewPoint(0, 0, -1) {
+		t.Errorf("expected %v, got %v", point.NewPoint(0, 0, -1), comps.Point)
+	}
+
+	if comps.EyeV != vector.NewVector(0, 0, -1) {
+		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.EyeV)
+	}
+
+	if comps.NormalV != vector.NewVector(0, 0, -1) {
+		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.NormalV)
+	}
+
+}
+
+// The hit, when an intersection occurs on the outside
+func TestPrepareShadeHit_2(t *testing.T) {
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	shape := shape.NewSphere()
+	xs := intersection.NewIntersection(4, shape)
+	comps := PrepareShadeHit(xs, r)
+
+	if comps.Inside != false {
+		t.Errorf("expected %v, got %v", false, comps.Inside)
+	}
+}
+
+// The hit, when an intersection occurs on the inside
+func TestPrepareShadeHit_3(t *testing.T) {
+	r := ray.NewRay(point.NewPoint(0, 0, 0), vector.NewVector(0, 0, 1))
+	shape := shape.NewSphere()
+	xs := intersection.NewIntersection(1, shape)
+	comps := PrepareShadeHit(xs, r)
+
+	if comps.Inside != true {
+		t.Errorf("expected %v, got %v", true, comps.Inside)
+	}
+
+	if comps.Point != point.NewPoint(0, 0, 1) {
+		t.Errorf("expected %v, got %v", point.NewPoint(0, 0, -1), comps.Point)
+	}
+
+	if comps.EyeV != vector.NewVector(0, 0, -1) {
+		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.EyeV)
+	}
+
+	if comps.NormalV != vector.NewVector(0, 0, -1) {
+		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.NormalV)
+	}
+
+}
+
+func TestPrepareShadeHit_4(t *testing.T) {
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	shape := shape.NewSphere()
+	shape.Material = material.Material{
+		Color:    color.NewColor(0.8, 1.0, 0.6),
+		Diffuse:  0.7,
+		Specular: 0.2,
+	}
+	xs := intersection.NewIntersection(4, shape)
+	comps := PrepareShadeHit(xs, r)
+
+	if comps.Inside != false {
+		t.Errorf("expected %v, got %v", false, comps.Inside)
+	}
+
+	if comps.T != xs.T {
+		t.Errorf("expected %v, got %v", xs.T, comps.T)
+	}
+
+	if !comps.Object.Equals(xs.Object) {
+		t.Errorf("expected %v, got %v", xs.Object, comps.Object)
+	}
+
+	if !comps.Point.Equals(point.NewPoint(0, 0, -1)) {
+		t.Errorf("expected %v, got %v", point.NewPoint(0, 0, -1), comps.Point)
+	}
+
+	if !comps.EyeV.Equals(vector.NewVector(0, 0, -1)) {
+		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.EyeV)
+	}
+
+	if !comps.NormalV.Equals(vector.NewVector(0, 0, -1)) {
+		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.NormalV)
+	}
+}
+
+// Shading an intersection
+func TestShadeHit_1(t *testing.T) {
+	w := DefaultWorld()
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	shape := w.Objects[0]
+	xs := intersection.NewIntersection(4, shape)
+
+	comps := PrepareShadeHit(xs, r)
+	shade := w.ShadeHit(comps)
+
+	expected := color.NewColor(0.38066, 0.47583, 0.2855)
+
+	if !shade.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, shade)
+	}
+}
+
+// Shading an intersection from the inside
+func TestShadeHit_2(t *testing.T) {
+	w := DefaultWorld()
+	w.Light = light.NewPointLight(point.NewPoint(0, 0.25, 0), color.NewColor(1, 1, 1))
+	r := ray.NewRay(point.NewPoint(0, 0, 0), vector.NewVector(0, 0, 1))
+	shape := w.Objects[1]
+	xs := intersection.NewIntersection(0.5, shape)
+
+	comps := PrepareShadeHit(xs, r)
+	shade := w.ShadeHit(comps)
+
+	expected := color.NewColor(0.90498, 0.90498, 0.90498)
+
+	if !shade.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, shade)
+	}
+}
+
+// The color when a ray misses
+func TestColorAt_1(t *testing.T) {
+	w := DefaultWorld()
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 1, 0))
+	c := w.ColorAt(r)
+
+	if !c.Equals(color.Black()) {
+		t.Errorf("expected %v, got %v", color.Black(), c)
+	}
+}
+
+// The color when a ray hits
+func TestColorAt_2(t *testing.T) {
+	w := DefaultWorld()
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	c := w.ColorAt(r)
+
+	expected := color.NewColor(0.38066, 0.47583, 0.2855)
+
+	if !c.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, c)
+	}
+}
+
+// The color with an intersectino behind the ray
+func TestColorAt_3(t *testing.T) {
+	w := DefaultWorld()
+	outer := &w.Objects[0]
+	outer.Material.Ambient = 1.0
+	inner := &w.Objects[1]
+	inner.Material.Ambient = 1.0
+	r := ray.NewRay(point.NewPoint(0, 0, 0.75), vector.NewVector(0, 0, -1))
+	c := w.ColorAt(r)
+
+	expected := inner.Material.Color
+
+	if !c.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, c)
+	}
 }

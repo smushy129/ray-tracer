@@ -7,7 +7,6 @@ import (
 	"github.com/kingsleyliao/ray-tracer/src/calculation/point"
 	"github.com/kingsleyliao/ray-tracer/src/calculation/vector"
 	"github.com/kingsleyliao/ray-tracer/src/collision/ray"
-	"github.com/kingsleyliao/ray-tracer/src/env/world"
 	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 )
 
@@ -196,56 +195,4 @@ func TestIntersectingSphere_2(t *testing.T) {
 	if expected != len(xs) {
 		t.Errorf("expected %v, got %v", expected, len(xs))
 	}
-}
-
-// Intersect a world with a ray
-func TestIntersectWorld(t *testing.T) {
-	w := world.DefaultWorld()
-	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
-	xs := IntersectWorld(w, r)
-
-	if xs[0].T != 4 {
-		t.Errorf("expected %v, got %v", 4, xs[0].T)
-	}
-
-	if xs[1].T != 4.5 {
-		t.Errorf("expected %v, got %v", 4.5, xs[1].T)
-	}
-
-	if xs[2].T != 5.5 {
-		t.Errorf("expected %v, got %v", 5.5, xs[2].T)
-	}
-
-	if xs[3].T != 6 {
-		t.Errorf("expected %v, got %v", 6, xs[3].T)
-	}
-}
-
-// Precomputing the state of an intersection
-func TestPrecomputeIntersectionState(t *testing.T) {
-	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
-	shape := shape.NewSphere()
-	xs := NewIntersection(4, shape)
-	comps := CalculatePreIntersection(xs, r)
-
-	if comps.T != xs.T {
-		t.Errorf("expected %v, got %v", xs.T, comps.T)
-	}
-
-	if !comps.Object.Equals(xs.Object) {
-		t.Errorf("expected %v, got %v", xs.Object, comps.Object)
-	}
-
-	if comps.Point != point.NewPoint(0, 0, -1) {
-		t.Errorf("expected %v, got %v", point.NewPoint(0, 0, -1), comps.Point)
-	}
-
-	if comps.EyeV != vector.NewVector(0, 0, -1) {
-		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.EyeV)
-	}
-
-	if comps.NormalV != vector.NewVector(0, 0, -1) {
-		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.NormalV)
-	}
-
 }

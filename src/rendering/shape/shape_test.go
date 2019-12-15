@@ -28,7 +28,7 @@ func TestDefaultMaterial(t *testing.T) {
 	s := NewSphere()
 	m := s.Material
 
-	expected := material.NewMaterial()
+	expected := material.DefaultMaterial()
 
 	if m != expected {
 		t.Errorf("expected %v, got %v", expected, m)
@@ -38,7 +38,7 @@ func TestDefaultMaterial(t *testing.T) {
 // A Sphere can be assigned a Material
 func TestAssignMaterial(t *testing.T) {
 	s := NewSphere()
-	m := material.NewMaterial()
+	m := material.DefaultMaterial()
 	m.Ambient = 1
 	s.Material = m
 
