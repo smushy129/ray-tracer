@@ -102,3 +102,19 @@ func (w World) ColorAt(r ray.Ray) color.Color {
 	comps := PrepareShadeHit(hit, r)
 	return w.ShadeHit(comps)
 }
+
+// ViewTransform describes the World's default orientation
+func ViewTransform(from, to point.Point, up vector.Vector) matrix.Matrix {
+	forward := to.Subtract(from).Normalize()
+	upn := up.Normalize()
+	left := forward.Cross(upn)
+	trueUp := left.Cross(forward)
+
+	orientation := matrix.Matrix{
+		{left.X, left.Y, left.Z, 0},
+		{trueUp.X, trueUp.Y, trueUp.Z, 0},
+		{-forward.X, -forward.Y, -forward.Z, 0},
+		{0, 0, 0, 1},
+	}
+	return orientation.Multiply(matrix.TranslationMatrix(-from.X, -from.Y, -from.Z))
+}

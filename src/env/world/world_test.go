@@ -15,6 +15,7 @@ import (
 	"github.com/kingsleyliao/ray-tracer/src/rendering/shape"
 )
 
+// Creates a Default world with the correct default values
 func TestDefaultWorld(t *testing.T) {
 	w := DefaultWorld()
 
@@ -131,42 +132,6 @@ func TestPrepareShadeHit_3(t *testing.T) {
 
 }
 
-func TestPrepareShadeHit_4(t *testing.T) {
-	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
-	shape := shape.NewSphere()
-	shape.Material = material.Material{
-		Color:    color.NewColor(0.8, 1.0, 0.6),
-		Diffuse:  0.7,
-		Specular: 0.2,
-	}
-	xs := intersection.NewIntersection(4, shape)
-	comps := PrepareShadeHit(xs, r)
-
-	if comps.Inside != false {
-		t.Errorf("expected %v, got %v", false, comps.Inside)
-	}
-
-	if comps.T != xs.T {
-		t.Errorf("expected %v, got %v", xs.T, comps.T)
-	}
-
-	if !comps.Object.Equals(xs.Object) {
-		t.Errorf("expected %v, got %v", xs.Object, comps.Object)
-	}
-
-	if !comps.Point.Equals(point.NewPoint(0, 0, -1)) {
-		t.Errorf("expected %v, got %v", point.NewPoint(0, 0, -1), comps.Point)
-	}
-
-	if !comps.EyeV.Equals(vector.NewVector(0, 0, -1)) {
-		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.EyeV)
-	}
-
-	if !comps.NormalV.Equals(vector.NewVector(0, 0, -1)) {
-		t.Errorf("expected %v, got %v", vector.NewVector(0, 0, -1), comps.NormalV)
-	}
-}
-
 // Shading an intersection
 func TestShadeHit_1(t *testing.T) {
 	w := DefaultWorld()
@@ -240,5 +205,64 @@ func TestColorAt_3(t *testing.T) {
 
 	if !c.Equals(expected) {
 		t.Errorf("expected %v, got %v", expected, c)
+	}
+}
+
+// The transform matrix for the default orientation
+func TestViewTransform_1(t *testing.T) {
+	from := point.NewPoint(0, 0, 0)
+	to := point.NewPoint(0, 0, -1)
+	up := vector.NewVector(0, 1, 0)
+	transform := ViewTransform(from, to, up)
+
+	if !transform.Equals(matrix.IdentityMatrix()) {
+		t.Errorf("expected %v, got %v", matrix.IdentityMatrix(), t)
+	}
+}
+
+// A view transformation matrix looking in the positive z direction
+func TestViewTransform_2(t *testing.T) {
+	from := point.NewPoint(0, 0, 0)
+	to := point.NewPoint(0, 0, 1)
+	up := vector.NewVector(0, 1, 0)
+	transform := ViewTransform(from, to, up)
+
+	expected := matrix.ScalingMatrix(-1, 1, -1)
+
+	if !transform.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, t)
+	}
+}
+
+// A view transformation moves the world
+func TestViewTransform_3(t *testing.T) {
+	from := point.NewPoint(0, 0, 8)
+	to := point.NewPoint(0, 0, 0)
+	up := vector.NewVector(0, 1, 0)
+	transform := ViewTransform(from, to, up)
+
+	expected := matrix.TranslationMatrix(0, 0, -8)
+
+	if !transform.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, t)
+	}
+}
+
+// An arbitrary view transform
+func TestViewTransform_4(t *testing.T) {
+	from := point.NewPoint(1, 3, 2)
+	to := point.NewPoint(4, -2, 8)
+	up := vector.NewVector(1, 1, 0)
+	transform := ViewTransform(from, to, up)
+
+	expected := matrix.Matrix{
+		{-0.50709, 0.50709, 0.67612, -2.36643},
+		{0.76772, 0.60609, 0.12122, -2.82843},
+		{-0.35857, 0.59761, -0.71714, 0.00000},
+		{0.00000, 0.00000, 0.00000, 1.00000},
+	}
+
+	if !transform.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, t)
 	}
 }
