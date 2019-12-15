@@ -41,7 +41,7 @@ func drawPurpleGiant() {
 	c := canvas.NewCanvas(canvasPixels, canvasPixels)
 
 	s := shape.NewSphere()
-	s.Material = material.NewMaterial()
+	s.Material = material.DefaultMaterial()
 	s.Material.Color = color.NewColor(1, 0.2, 1)
 
 	lightPosition := point.NewPoint(-10, 10, -10)
