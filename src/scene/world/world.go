@@ -67,6 +67,7 @@ func PrepareShadeHit(i intersection.Intersection, r ray.Ray) ShadingComputations
 	normalV := i.Object.NormalAt(r.PositionAt(i.T))
 	inside := false
 	// Negative dot product of two vectors means the vectors are pointing in opposite directions
+	// and that the ray originates from inside the object, behind the intersection
 	if normalV.Dot(eyeV) < 0 {
 		inside = true
 		normalV = normalV.Invert()

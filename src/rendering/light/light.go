@@ -28,7 +28,7 @@ func (l Light) Equals(l2 Light) bool {
 	return l.Intensity.Equals(l2.Intensity) && l.Position.Equals(l2.Position)
 }
 
-// Lighting returns a Color based on the Lighting
+// Lighting returns a Color based on the Lighting (Phong Reflection Model)
 func Lighting(m material.Material, l Light, p point.Point, eyeV, normalV vector.Vector) color.Color {
 	// Combine the surface color witht he light's color and intensity
 	effectiveColor := m.Color.Multiply(l.Intensity)
