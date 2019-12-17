@@ -9,6 +9,15 @@ This is a ray tracing library capable of rendering 3D objects with realistic lig
 - Rays, Intersections, Hit testing
 - World Scene, Camera
 
+## Steps to run:
+
+1. Go to the root directory and open `main.go`
+2. Look at `main()` and decide which renders you want to see outputted - comment out the rest
+3. Go to the root directory and run `go build` and then run `./ray-tracer` in your terminal
+4. Your render will be output into the project's root directory (change this in `ppm.go` if you like)
+
+**_Note: Some renders will take a while to render depending on your computer specs (5-15 minutes)_**
+
 ## Examples
 
 #### Goblin Army
