@@ -7,6 +7,11 @@ This is a ray tracing library capable of rendering 3D objects with realistic lig
 - Rays, Intersections, Hit testing
 - World Scene, Camera
 
+## Requirements:
+
+- Go Programming language: [https://golang.org]: https://golang.org
+- MacOS (Windows will work, but you will have to find a third party program to open `.ppm` files)
+
 ## Steps to run:
 
 1. Go to the root directory and open `main.go`
