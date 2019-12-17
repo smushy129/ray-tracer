@@ -1,6 +1,4 @@
-# Ray Tracer
-
-![build](https://travis-ci.com/kingsleyliao/ray-tracer.svg?branch=master)
+# Ray Tracer ![build](https://travis-ci.com/kingsleyliao/ray-tracer.svg?branch=master)
 
 This is a ray tracing library capable of rendering 3D objects with realistic lights, shading, and shadows. It contains the primitives and APIs necessary creating a 3D scene including:
 
