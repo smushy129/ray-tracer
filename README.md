@@ -4,16 +4,16 @@
 
 This is a ray tracing library capable of rendering 3D objects with realistic lights, shading, and shadows. It contains the primitives and APIs necessary creating a 3D scene including:
 
-- Vectors
-- Points
-- Matrices
-- Rays
-- Lighting
-- Colors
-- Shapes
-- Intersections/Hit testing
+- Vectors, Points, Matrices
+- Shapes, Lighting, Colors
+- Rays, Intersections, Hit testing
+- World Scene, Camera
 
 ## Examples
+
+#### Goblin Army
+
+![alt text](https://github.com/kingsleyliao/ray-tracer/blob/master/samples/Goblin%20Army.png "Goblin Army")
 
 #### Purple Giant
 
