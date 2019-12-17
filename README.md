@@ -9,7 +9,7 @@ This is a ray tracing library capable of rendering 3D objects with realistic lig
 
 ## Requirements:
 
-- [Go Programming language]: https://golang.org
+- Go Programming language: https://golang.org
 - MacOS (Windows will work, but you will have to find a third party program to open `.ppm` files)
 
 ## Steps to run:
