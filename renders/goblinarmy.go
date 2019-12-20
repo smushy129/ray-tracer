@@ -63,10 +63,10 @@ func DrawGoblinArmy() {
 		Objects: []shape.Sphere{tanSphere, bigSphere, mediumSphere, floor, leftWall, rightWall},
 	}
 
-	camera := camera.NewCamera(500, 500, math.Pi/3)
+	camera := camera.NewCamera(50, 50, math.Pi/3)
 	camera.Transform = world.ViewTransform(point.NewPoint(0, 1.5, -5), point.NewPoint(0, 1, 0), vector.Up())
 
 	canvas := camera.Render(w)
 	ppm := canvas.ToPPM()
-	outputPPM(ppm, "goblinarmy.ppm")
+	outputPPM(ppm, "goblinarmy2.ppm")
 }

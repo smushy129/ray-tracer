@@ -266,3 +266,55 @@ func TestViewTransform_4(t *testing.T) {
 		t.Errorf("expected %v, got %v", expected, t)
 	}
 }
+
+// There is no shadow when nothing is collinear with point and light
+func TestIsShadowed_1(t *testing.T) {
+	w := DefaultWorld()
+	p := point.NewPoint(0, 10, 0)
+
+	isShadowed := w.IsShadowed(p)
+	expected := false
+
+	if isShadowed != expected {
+		t.Errorf("expected %v, got %v", expected, isShadowed)
+	}
+}
+
+// The shadow when an object is between the point and the light
+func TestIsShadowed_2(t *testing.T) {
+	w := DefaultWorld()
+	p := point.NewPoint(0, -10, 10)
+
+	isShadowed := w.IsShadowed(p)
+	expected := true
+
+	if isShadowed != expected {
+		t.Errorf("expected %v, got %v", expected, isShadowed)
+	}
+}
+
+// There is no shadow when an object is behind the light
+func TestIsShadowed_3(t *testing.T) {
+	w := DefaultWorld()
+	p := point.NewPoint(-20, 20, -20)
+
+	isShadowed := w.IsShadowed(p)
+	expected := true
+
+	if isShadowed != expected {
+		t.Errorf("expected %v, got %v", expected, isShadowed)
+	}
+}
+
+// There is no shadow when an object is behind the point
+func TestIsShadowed_4(t *testing.T) {
+	w := DefaultWorld()
+	p := point.NewPoint(-2, 2, -2)
+
+	isShadowed := w.IsShadowed(p)
+	expected := true
+
+	if isShadowed != expected {
+		t.Errorf("expected %v, got %v", expected, isShadowed)
+	}
+}

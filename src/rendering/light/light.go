@@ -29,7 +29,7 @@ func (l Light) Equals(l2 Light) bool {
 }
 
 // Lighting returns a Color based on the Lighting (Phong Reflection Model)
-func Lighting(m material.Material, l Light, p point.Point, eyeV, normalV vector.Vector) color.Color {
+func Lighting(m material.Material, l Light, p point.Point, eyeV, normalV vector.Vector, inShadow bool) color.Color {
 	// Combine the surface color witht he light's color and intensity
 	effectiveColor := m.Color.Multiply(l.Intensity)
 
@@ -38,6 +38,10 @@ func Lighting(m material.Material, l Light, p point.Point, eyeV, normalV vector.
 
 	// Compute the ambient contribution (default ambient is 0.1)
 	ambient := effectiveColor.Scale(m.Ambient)
+
+	if inShadow {
+		return ambient
+	}
 
 	// lightDotNormal represents the cosine of the angle between the light vector and the normal vector.
 	lightDotNormal := lightVector.Dot(normalV)

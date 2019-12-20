@@ -35,7 +35,7 @@ func TestLighting_1(t *testing.T) {
 	normalV := vector.NewVector(0, 0, -1)
 
 	l := NewPointLight(point.NewPoint(0, 0, -10), color.NewColor(1, 1, 1))
-	result := Lighting(m, l, p, eyeV, normalV)
+	result := Lighting(m, l, p, eyeV, normalV, false)
 
 	expected := color.NewColor(1.9, 1.9, 1.9)
 
@@ -52,7 +52,7 @@ func TestLighting_2(t *testing.T) {
 	normalV := vector.NewVector(0, 0, -1)
 
 	l := NewPointLight(point.NewPoint(0, 0, -10), color.NewColor(1, 1, 1))
-	result := Lighting(m, l, p, eyeV, normalV)
+	result := Lighting(m, l, p, eyeV, normalV, false)
 
 	expected := color.NewColor(1, 1, 1)
 
@@ -69,7 +69,7 @@ func TestLighting_3(t *testing.T) {
 	normalV := vector.NewVector(0, 0, -1)
 
 	l := NewPointLight(point.NewPoint(0, 10, -10), color.NewColor(1, 1, 1))
-	result := Lighting(m, l, p, eyeV, normalV)
+	result := Lighting(m, l, p, eyeV, normalV, false)
 
 	expected := color.NewColor(0.7364, 0.7364, 0.7364)
 
@@ -86,7 +86,7 @@ func TestLighting_4(t *testing.T) {
 	normalV := vector.NewVector(0, 0, -1)
 
 	l := NewPointLight(point.NewPoint(0, 10, -10), color.NewColor(1, 1, 1))
-	result := Lighting(m, l, p, eyeV, normalV)
+	result := Lighting(m, l, p, eyeV, normalV, false)
 
 	expected := color.NewColor(1.6364, 1.6364, 1.6364)
 
@@ -103,11 +103,28 @@ func TestLighting_5(t *testing.T) {
 	normalV := vector.NewVector(0, 0, -1)
 
 	l := NewPointLight(point.NewPoint(0, 0, 10), color.NewColor(1, 1, 1))
-	result := Lighting(m, l, p, eyeV, normalV)
+	result := Lighting(m, l, p, eyeV, normalV, false)
 
 	expected := color.NewColor(0.1, 0.1, 0.1)
 
 	if !expected.Equals(result) {
 		t.Errorf("expected %v, got %v", expected, result)
+	}
+}
+
+// Lighting with the surface in shadow
+func TestLightingShadow(t *testing.T) {
+	m := material.DefaultMaterial()
+	p := point.Zero()
+	eyeV := vector.NewVector(0, 0, -1)
+	normalV := vector.NewVector(0, 0, -1)
+	light := NewPointLight(point.NewPoint(0, 0, -10), color.NewColor(1, 1, 1))
+	inShadow := true
+
+	shade := Lighting(m, light, p, eyeV, normalV, inShadow)
+	expected := color.NewColor(0.1, 0.1, 0.1)
+
+	if !shade.Equals(expected) {
+		t.Errorf("expected %v, got %v", expected, shade)
 	}
 }

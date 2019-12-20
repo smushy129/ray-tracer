@@ -55,7 +55,7 @@ func DrawPurpleGiant() {
 				point := r.PositionAt(hit.T)
 				normal := hit.Object.NormalAt(point)
 				eye := r.Direction.Invert()
-				pixelColor := light.Lighting(hit.Object.Material, l, point, eye, normal)
+				pixelColor := light.Lighting(hit.Object.Material, l, point, eye, normal, false)
 				canvas.WritePixel(c, x, y, pixelColor)
 			}
 		}

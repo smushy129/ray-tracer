@@ -5,9 +5,9 @@ import (
 )
 
 func main() {
-	renders.DrawParabola()
-	renders.DrawClockFace()
-	renders.DrawRedGiant()
-	renders.DrawPurpleGiant()
+	// renders.DrawParabola()
+	// renders.DrawClockFace()
+	// renders.DrawRedGiant()
+	// renders.DrawPurpleGiant()
 	renders.DrawGoblinArmy()
 }

@@ -53,19 +53,23 @@ func IntersectWorld(w World, r ray.Ray) intersection.ByT {
 
 // ShadingComputations are computations used for shading effectively
 type ShadingComputations struct {
-	T       float64
-	Object  shape.Sphere
-	Point   point.Point
-	EyeV    vector.Vector
-	NormalV vector.Vector
-	Inside  bool
+	T         float64
+	Object    shape.Sphere
+	Point     point.Point
+	EyeV      vector.Vector
+	NormalV   vector.Vector
+	Inside    bool
+	OverPoint point.Point
 }
 
 // PrepareShadeHit the state of an Intersection
 func PrepareShadeHit(i intersection.Intersection, r ray.Ray) ShadingComputations {
+	EPSILON := 0.00001
 	eyeV := r.Direction.Invert()
 	normalV := i.Object.NormalAt(r.PositionAt(i.T))
 	inside := false
+	p := r.PositionAt(i.T)
+	overPoint := p.Add(normalV.Scale(EPSILON))
 	// Negative dot product of two vectors means the vectors are pointing in opposite directions
 	// and that the ray originates from inside the object, behind the intersection
 	if normalV.Dot(eyeV) < 0 {
@@ -73,23 +77,26 @@ func PrepareShadeHit(i intersection.Intersection, r ray.Ray) ShadingComputations
 		normalV = normalV.Invert()
 	}
 	return ShadingComputations{
-		T:       i.T,
-		Object:  i.Object,
-		Point:   r.PositionAt(i.T),
-		EyeV:    eyeV,
-		NormalV: normalV,
-		Inside:  inside,
+		T:         i.T,
+		Object:    i.Object,
+		Point:     p,
+		EyeV:      eyeV,
+		NormalV:   normalV,
+		Inside:    inside,
+		OverPoint: overPoint,
 	}
 }
 
 // ShadeHit shades the color of a pixel based no the properties of the Ray and Object
 func (w World) ShadeHit(comps ShadingComputations) color.Color {
+	shadowed := w.IsShadowed(comps.OverPoint)
 	return light.Lighting(
 		comps.Object.Material,
 		w.Light,
 		comps.Point,
 		comps.EyeV,
 		comps.NormalV,
+		shadowed,
 	)
 }
 
@@ -118,4 +125,23 @@ func ViewTransform(from, to point.Point, up vector.Vector) matrix.Matrix {
 		{0, 0, 0, 1},
 	}
 	return orientation.Multiply(matrix.TranslationMatrix(-from.X, -from.Y, -from.Z))
+}
+
+// IsShadowed returns if a pixel is in a shadow
+func (w World) IsShadowed(p point.Point) bool {
+	v := w.Light.Position.Subtract(p)
+	distance := v.Magnitude()
+	direction := v.Normalize()
+
+	r := ray.NewRay(p, direction)
+	xs := IntersectWorld(w, r)
+
+	h, ok := intersection.Hit(xs)
+
+	if !ok {
+		return false
+	} else if h.T < distance {
+		return true
+	}
+	return false
 }
