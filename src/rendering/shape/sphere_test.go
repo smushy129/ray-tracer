@@ -40,7 +40,7 @@ func TestAssignMaterial(t *testing.T) {
 	s := NewSphere()
 	m := material.DefaultMaterial()
 	m.Ambient = 1
-	s.Material = m
+	s.SetMaterial(m)
 
 	expected := m
 

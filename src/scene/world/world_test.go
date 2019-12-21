@@ -132,6 +132,24 @@ func TestPrepareShadeHit_3(t *testing.T) {
 
 }
 
+// The hit should offset the point
+func TestPrepareShadeHitOverPoint(t *testing.T) {
+	EPSILON := 0.00001
+	r := ray.NewRay(point.NewPoint(0, 0, -5), vector.NewVector(0, 0, 1))
+	shape := shape.NewSphere()
+	shape.SetTransform(matrix.TranslationMatrix(0, 0, 1))
+	xs := intersection.NewIntersection(5, shape)
+	comps := PrepareShadeHit(xs, r)
+
+	if !(comps.OverPoint.Z < -EPSILON/2) {
+		t.Errorf("expected %v, got %v", true, false)
+	}
+
+	if !(comps.Point.Z > comps.OverPoint.Z) {
+		t.Errorf("expected %v, got %v", true, false)
+	}
+}
+
 // Shading an intersection
 func TestShadeHit_1(t *testing.T) {
 	w := DefaultWorld()

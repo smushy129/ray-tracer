@@ -30,6 +30,11 @@ func (s *Sphere) SetTransform(m matrix.Matrix) {
 	s.Transform = m
 }
 
+// SetMaterial mutates the Transform Matrix of a Sphere
+func (s *Sphere) SetMaterial(m material.Material) {
+	s.Material = m
+}
+
 // NormalAt finds the normal vector of a point on the surface of a Sphere
 func (s Sphere) NormalAt(p point.Point) vector.Vector {
 	objectPoint := s.Transform.Invert().MultiplyTuple(p)
